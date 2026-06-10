@@ -9,6 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@better-auth/kysely-adapter": "^1.6.16",
+    "@heroui/react": "^3.1.0",
+    "@heroui/styles": "^3.1.0",
+    "better-auth": "^1.6.16",
+    "kysely": "^0.28.17",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4"
