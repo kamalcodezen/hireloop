@@ -160,7 +160,7 @@ const Navbar = () => {
               )}
 
               <Link
-                href="/auth/login"
+                href="/login"
                 className="
                 h-11
                 px-5
@@ -184,7 +184,7 @@ const Navbar = () => {
               </Link>
 
               <Link
-                href="/auth/signup"
+                href="/signup"
                 className="
                 h-11
                 px-6
@@ -394,7 +394,7 @@ const Navbar = () => {
           {/* Mobile Bottom */}
           <div className="p-6 space-y-3 border-t border-gray-200 dark:border-white/10">
             <Link
-              href="/auth/login"
+              href="/login"
               onClick={() => setOpen(false)}
               className="
               flex
@@ -413,7 +413,7 @@ const Navbar = () => {
             </Link>
 
             <Link
-              href="/auth/signup"
+              href="/signup"
               onClick={() => setOpen(false)}
               className="
               flex
