@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   LogOut,
+  Building2,
 } from "lucide-react";
 
 const DashboardSidebar = () => {
@@ -22,24 +23,29 @@ const DashboardSidebar = () => {
 
   const menus = [
     {
-      title: "Dashboard",
-      href: "/dashboard",
+      title: "Home",
+      href: "/dashboard/recruiter",
       icon: LayoutDashboard,
     },
+    // {
+    //   title: "Jobs",
+    //   href: "/dashboard/recruiter/jobs",
+    //   icon: User,
+    // },
     {
-      title: "Profile",
-      href: "/dashboard/profile",
-      icon: User,
+      title: "Jobs",
+      href: "/dashboard/recruiter/jobs",
+      icon: Briefcase,
     },
     {
-      title: "Applications",
-      href: "/dashboard/applications",
+      title: "Post A Job",
+      href: "/dashboard/recruiter/jobs/new",
       icon: FileText,
     },
     {
-      title: "My Jobs",
-      href: "/dashboard/my-jobs",
-      icon: Briefcase,
+      title: "Company Profile",
+      href: "/dashboard/recruiter/company",
+      icon: Building2,
     },
     {
       title: "Applicants",

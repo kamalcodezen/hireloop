@@ -5,7 +5,7 @@ import { toast } from "react-toastify"; // আপনার প্রজেক্
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const NewJobs = () => {
+const NewPostJobs = () => {
   const [isRemote, setIsRemote] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
@@ -438,4 +438,4 @@ const NewJobs = () => {
   );
 };
 
-export default NewJobs;
+export default NewPostJobs;
