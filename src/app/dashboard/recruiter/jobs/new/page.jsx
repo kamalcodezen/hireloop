@@ -1,13 +1,17 @@
 "use client";
 
+import { createJobs } from "@/lib/action/jobs";
+import { toast } from "@heroui/react";
 import { form } from "framer-motion/client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const NewJobs = () => {
   const [isRemote, setIsRemote] = useState(false);
   const [errors, setErrors] = useState({});
+  const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({}); // Reset previous errors
 
@@ -28,8 +32,6 @@ const NewJobs = () => {
       requirements: formFields.requirements?.trim(),
       benefits: formFields.benefits?.trim(),
     };
-
-    console.log(formData);
 
     // ================= Validation =================
     const newErrors = {};
@@ -85,13 +87,13 @@ const NewJobs = () => {
 
     if (!formData.responsibilities) {
       newErrors.responsibilities = "Responsibilities are required";
-    } else if (formData.responsibilities.length < 50) {
+    } else if (formData.responsibilities.length < 10) {
       newErrors.responsibilities = `Responsibilities must be at least 50 characters (Current: ${formData.responsibilities.length})`;
     }
 
     if (!formData.requirements) {
       newErrors.requirements = "Requirements are required";
-    } else if (formData.requirements.length < 50) {
+    } else if (formData.requirements.length < 10) {
       newErrors.requirements = `Requirements must be at least 50 characters (Current: ${formData.requirements.length})`;
     }
 
@@ -102,8 +104,18 @@ const NewJobs = () => {
     }
 
     // ================= Success =================
-    console.log("Job Data Submission:", formData);
-    alert("Validation Passed ✅ Form Submitted Successfully!");
+    try {
+      const jobsData = await createJobs(formData);
+      if (jobsData.insertedId) {
+        toast.success("Form Submitted Successfully!");
+        router.refresh();
+        router.push("/dashboard/recruiter/jobs");
+      } else {
+        toast.error("Failed to submit idea");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
   };
 
   return (
