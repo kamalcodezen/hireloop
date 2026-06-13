@@ -26,6 +26,8 @@ const Navbar = () => {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
+  // console.log(user)
+
   // logout function
   const handleSignOut = async () => {
     await authClient.signOut({
@@ -45,19 +47,15 @@ const Navbar = () => {
   const links = [
     {
       label: "Jobs",
-      path: "/jobs",
+      path: "/",
     },
     {
       label: "Companies",
-      path: "/companies",
-    },
-    {
-      label: "Talent",
-      path: "/talent",
+      path: "/",
     },
     {
       label: "Pricing",
-      path: "/pricing",
+      path: "/",
     },
   ];
 

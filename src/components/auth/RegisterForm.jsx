@@ -24,6 +24,7 @@ export default function RegisterForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState("seeker");
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -36,6 +37,7 @@ export default function RegisterForm() {
     const email = formData.email;
     const password = formData.password;
     const confirmPassword = formData.confirmPassword;
+    const role = formData.role;
 
     if (!name || !email || !password || !confirmPassword) {
       toast.error("Please fill all fields");
@@ -60,6 +62,7 @@ export default function RegisterForm() {
           name,
           email,
           password,
+          role,
         },
         {
           onRequest: () => {
@@ -533,6 +536,39 @@ export default function RegisterForm() {
                       <Eye size={18} />
                     )}
                   </button>
+                </div>
+              </div>
+
+              {/* Role Selection */}
+              <div>
+                <label className="block mb-3 text-sm font-medium">
+                  Select Role
+                </label>
+
+                <div
+                  // onChange={(value) => setRole(value)}
+                  className="flex items-center gap-6"
+                >
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="seeker"
+                      defaultChecked
+                      className="accent-green-600 cursor-pointer"
+                    />
+                    <span>Job Seeker</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="recruiter"
+                      className="accent-green-600 cursor-pointer"
+                    />
+                    <span>Recruiter</span>
+                  </label>
                 </div>
               </div>
 
