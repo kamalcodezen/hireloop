@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { HiMenu, HiX } from "react-icons/hi";
 import { Sun, Moon, ChevronDown } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -18,6 +21,26 @@ const Navbar = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // user details access
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+
+  // logout function
+  const handleSignOut = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("See you soon! 👋 Logged out successfully", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+          router.push("/");
+          router.refresh();
+        },
+      },
+    });
+  };
 
   const links = [
     {
@@ -159,9 +182,16 @@ const Navbar = () => {
                 </button>
               )}
 
-              <Link
-                href="/login"
-                className="
+              <>
+                {isPending && !user && (
+                  <div className="h-10 w-24 animate-pulse rounded-2xl bg-muted" />
+                )}
+
+                {!isPending && !user && (
+                  <>
+                    <Link
+                      href="/login"
+                      className="
                 h-11
                 px-5
                 rounded-xl
@@ -179,13 +209,13 @@ const Navbar = () => {
                 dark:hover:bg-[#10251F]
                 transition-all
               "
-              >
-                Sign In
-              </Link>
+                    >
+                      Sign In
+                    </Link>
 
-              <Link
-                href="/signup"
-                className="
+                    <Link
+                      href="/signup"
+                      className="
                 h-11
                 px-6
                 rounded-xl
@@ -201,9 +231,62 @@ const Navbar = () => {
                 shadow-lg
                 shadow-green-500/20
               "
-              >
-                Get Started
-              </Link>
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
+
+                {!isPending && user && (
+                  <>
+                    <button
+                      onClick={handleSignOut}
+                      className="
+                h-11
+                px-5
+                rounded-xl
+                border
+                border-gray-200
+                dark:border-white/10
+                flex
+                items-center
+                justify-center
+                text-sm
+                font-medium
+                text-gray-700
+                dark:text-white
+                hover:bg-gray-50
+                dark:hover:bg-[#10251F]
+                transition-all cursor-pointer
+              "
+                    >
+                      Sign Out
+                    </button>
+
+                    <Link
+                      href="/"
+                      className="
+                h-11
+                px-6
+                rounded-xl
+                bg-green-600
+                hover:bg-green-700
+                text-white
+                text-sm
+                font-medium
+                flex
+                items-center
+                justify-center
+                transition-all
+                shadow-lg
+                shadow-green-500/20
+              "
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
+              </>
             </div>
 
             {/* Mobile Button */}
@@ -224,7 +307,7 @@ const Navbar = () => {
               items-center
               justify-center
               text-gray-700
-              dark:text-white
+              dark:text-white cursor-pointer
             "
             >
               <HiMenu />
@@ -393,10 +476,12 @@ const Navbar = () => {
 
           {/* Mobile Bottom */}
           <div className="p-6 space-y-3 border-t border-gray-200 dark:border-white/10">
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="
+            {!isPending && !user && (
+              <>
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="
               flex
               items-center
               justify-center
@@ -408,14 +493,14 @@ const Navbar = () => {
               text-gray-700
               dark:text-white
             "
-            >
-              Sign In
-            </Link>
+                >
+                  Sign In
+                </Link>
 
-            <Link
-              href="/signup"
-              onClick={() => setOpen(false)}
-              className="
+                <Link
+                  href="/signup"
+                  onClick={() => setOpen(false)}
+                  className="
               flex
               items-center
               justify-center
@@ -426,9 +511,54 @@ const Navbar = () => {
               text-white
               font-medium
             "
-            >
-              Get Started
-            </Link>
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
+            {!isPending && user && (
+              <>
+                <Link
+                  href="#"
+                  onClick={() => {
+                    handleSignOut();
+                    setOpen(false);
+                  }}
+                  className="
+              flex
+              items-center
+              justify-center
+              h-12
+              rounded-xl
+              border
+              border-gray-200
+              dark:border-white/10
+              text-gray-700
+              dark:text-white cursor-pointer
+            "
+                >
+                  Sign Out
+                </Link>
+
+                <Link
+                  href="/"
+                  onClick={() => setOpen(false)}
+                  className="
+              flex
+              items-center
+              justify-center
+              h-12
+              rounded-xl
+              bg-green-600
+              hover:bg-green-700
+              text-white
+              font-medium cursor-pointer
+            "
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

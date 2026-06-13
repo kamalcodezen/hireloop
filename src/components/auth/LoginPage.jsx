@@ -51,7 +51,7 @@ export default function LoginPage() {
             setTimeout(() => {
               router.refresh();
               router.push("/");
-            }, 600);
+            }, 200);
           },
 
           onError: (ctx) => {

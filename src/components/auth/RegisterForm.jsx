@@ -73,7 +73,7 @@ export default function RegisterForm() {
             setTimeout(() => {
               router.refresh();
               router.push("/");
-            }, 300);
+            }, 200);
           },
 
           onError: (ctx) => {
