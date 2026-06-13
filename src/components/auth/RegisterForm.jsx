@@ -17,14 +17,13 @@ import {
 } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
-// import logo from "../../../../public/images/logo 1.png";
+
 import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState("seeker");
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -546,7 +545,7 @@ export default function RegisterForm() {
                 </label>
 
                 <div
-                  // onChange={(value) => setRole(value)}
+               
                   className="flex items-center gap-6"
                 >
                   <label className="flex items-center gap-2 cursor-pointer">
