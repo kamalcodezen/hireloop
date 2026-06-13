@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 import {
-  User,
   Mail,
   Lock,
   Eye,
@@ -17,75 +16,50 @@ import {
 } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
-// import logo from "../../../../public/images/logo 1.png";
-import { useRouter } from "next/navigation";
 
-export default function RegisterForm() {
+export default function LoginPage() {
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    const name = formData.name;
     const email = formData.email;
     const password = formData.password;
-    const confirmPassword = formData.confirmPassword;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!email || !password) {
       toast.error("Please fill all fields");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
-    if (password.length < 8) {
-      toast.error("Password must be at least 8 characters");
       return;
     }
 
     try {
       setLoading(true);
 
-      await authClient.signUp.email(
+      await authClient.signIn.email(
         {
-          name,
           email,
           password,
         },
         {
-          onRequest: () => {
-            setLoading(true);
-          },
-
           onSuccess: () => {
-            setLoading(false);
-            toast.success("Account created successfully");
+            toast.success("Welcome Back!");
 
             setTimeout(() => {
               router.refresh();
               router.push("/");
-            }, 300);
+            }, 600);
           },
 
           onError: (ctx) => {
-            setLoading(false);
-            toast.error(
-              ctx.error.message || "Signup failed | Please try again",
-            );
+            toast.error(ctx.error.message || "Login failed");
           },
         },
       );
     } catch (error) {
-      setLoading(false);
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
@@ -102,7 +76,7 @@ export default function RegisterForm() {
       relative
     "
     >
-      {/* Background Glow */}
+      {/* Glow */}
       <div
         className="
         absolute
@@ -122,15 +96,15 @@ export default function RegisterForm() {
         className="
         relative
         z-10
-        max-w-11/12
+        w-[95%]
+        max-w-7xl
         mx-auto
         min-h-screen
         grid
         lg:grid-cols-2
       "
       >
-        {/* ================= LEFT SIDE ================= */}
-
+        {/* LEFT SIDE */}
         <div
           className="
           hidden
@@ -141,11 +115,6 @@ export default function RegisterForm() {
           xl:px-16
         "
         >
-          {/* Logo */}
-          {/* <div className="mb-12">
-            <Image src={logo} alt="HireEdge" width={190} height={50} />
-          </div> */}
-
           <span
             className="
             inline-flex
@@ -163,7 +132,7 @@ export default function RegisterForm() {
           "
           >
             <Briefcase size={16} />
-            AI Powered Hiring Platform
+            Welcome Back
           </span>
 
           <h1
@@ -176,9 +145,9 @@ export default function RegisterForm() {
             dark:text-white
           "
           >
-            Find Your Next
+            Continue Your
             <br />
-            <span className="text-green-600">Career Edge</span>
+            <span className="text-green-600">Career Journey</span>
           </h1>
 
           <p
@@ -191,26 +160,18 @@ export default function RegisterForm() {
             max-w-xl
           "
           >
-            Join thousands of professionals discovering better opportunities
-            through AI-powered job matching and smart hiring solutions.
+            Access your dashboard, manage applications, discover new
+            opportunities and connect with top companies worldwide.
           </p>
 
-          {/* Features */}
           <div className="mt-12 space-y-5">
             {[
-              "AI Powered Job Matching",
-              "Verified Companies",
               "Track Applications",
-              "Real-time Notifications",
+              "AI Job Matching",
+              "Verified Companies",
+              "Real-time Updates",
             ].map((item) => (
-              <div
-                key={item}
-                className="
-                flex
-                items-center
-                gap-3
-              "
-              >
+              <div key={item} className="flex items-center gap-3">
                 <CheckCircle2 size={20} className="text-green-600" />
 
                 <span
@@ -225,7 +186,6 @@ export default function RegisterForm() {
             ))}
           </div>
 
-          {/* Stats */}
           <div
             className="
             mt-14
@@ -299,8 +259,7 @@ export default function RegisterForm() {
           </div>
         </div>
 
-        {/* ================= RIGHT SIDE ================= */}
-
+        {/* RIGHT SIDE */}
         <div
           className="
           flex
@@ -325,11 +284,6 @@ export default function RegisterForm() {
             p-8
           "
           >
-            {/* Mobile Logo */}
-            {/* <div className="lg:hidden flex justify-center mb-8">
-              <Image src={logo} alt="logo" width={180} height={40} />
-            </div> */}
-
             <div className="text-center">
               <h2
                 className="
@@ -339,7 +293,7 @@ export default function RegisterForm() {
                 dark:text-white
               "
               >
-                Create Account
+                Welcome Back
               </h2>
 
               <p
@@ -349,52 +303,11 @@ export default function RegisterForm() {
                 dark:text-white/60
               "
               >
-                Start your journey with HireEdge today.
+                Login to your HireEdge account
               </p>
             </div>
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-              {/* Name */}
-              <div>
-                <label
-                  className="
-                  block
-                  mb-2
-                  text-sm
-                  font-medium
-                "
-                >
-                  Full Name
-                </label>
-
-                <div
-                  className="
-                  flex
-                  items-center
-                  gap-3
-                  h-14
-                  px-4
-                  rounded-xl
-                  border
-                  border-gray-200
-                  dark:border-white/10
-                "
-                >
-                  <User size={18} className="text-gray-400" />
-
-                  <input
-                    name="name"
-                    placeholder="John Doe"
-                    className="
-                    w-full
-                    bg-transparent
-                    outline-none
-                  "
-                  />
-                </div>
-              </div>
-
               {/* Email */}
               <div>
                 <label
@@ -484,73 +397,19 @@ export default function RegisterForm() {
                 </div>
               </div>
 
-              {/* Confirm Password */}
-              <div>
-                <label
+              <div className="flex justify-end">
+                <Link
+                  href="/forgot-password"
                   className="
-                  block
-                  mb-2
                   text-sm
-                  font-medium
+                  text-green-600
+                  hover:underline
                 "
                 >
-                  Confirm Password
-                </label>
-
-                <div
-                  className="
-                  flex
-                  items-center
-                  gap-3
-                  h-14
-                  px-4
-                  rounded-xl
-                  border
-                  border-gray-200
-                  dark:border-white/10
-                "
-                >
-                  <Lock size={18} className="text-gray-400" />
-
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    placeholder="••••••••"
-                    className="
-                    w-full
-                    bg-transparent
-                    outline-none
-                  "
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff size={18} />
-                    ) : (
-                      <Eye size={18} />
-                    )}
-                  </button>
-                </div>
+                  Forgot Password?
+                </Link>
               </div>
 
-              {/* Terms */}
-              <label
-                className="
-                flex
-                items-center
-                gap-3
-                text-sm 
-              "
-              >
-                <input className="cursor-pointer" type="checkbox" required />
-
-                <span>I agree to the Terms & Conditions</span>
-              </label>
-
-              {/* Submit */}
               <button
                 disabled={loading}
                 type="submit"
@@ -565,15 +424,15 @@ export default function RegisterForm() {
                 flex
                 items-center
                 justify-center
-                gap-2 cursor-pointer
+                gap-2
+                cursor-pointer
               "
               >
-                {loading ? "Creating Account..." : "Create Account"}
+                {loading ? "Signing In..." : "Sign In"}
 
                 <ArrowRight size={18} />
               </button>
 
-              {/* Divider */}
               <div className="relative py-2">
                 <div className="border-t border-gray-200 dark:border-white/10" />
 
@@ -594,7 +453,6 @@ export default function RegisterForm() {
                 </span>
               </div>
 
-              {/* Google */}
               <button
                 type="button"
                 className="
@@ -604,14 +462,14 @@ export default function RegisterForm() {
                 border
                 border-gray-200
                 dark:border-white/10
-                font-medium cursor-pointer
+                font-medium
+                cursor-pointer
               "
               >
                 Continue with Google
               </button>
             </form>
 
-            {/* Footer */}
             <p
               className="
               text-center
@@ -620,16 +478,16 @@ export default function RegisterForm() {
               dark:text-white/60
             "
             >
-              Already have an account?
+              Don't have an account?
               <Link
-                href="/login"
+                href="/signup"
                 className="
                 ml-2
                 text-green-600
                 font-medium
               "
               >
-                Sign In
+                Create Account
               </Link>
             </p>
           </div>

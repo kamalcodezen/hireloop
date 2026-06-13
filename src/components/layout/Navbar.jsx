@@ -43,7 +43,7 @@ const Navbar = () => {
       {/* ================= NAVBAR ================= */}
 
       <header className="fixed top-0 left-0 w-full z-[100]">
-        <div className="max-w-7xl mx-auto px-5 pt-5">
+        <div className="max-w-7xl mx-auto px-5 pt-0">
           <div
             className="
             h-[60px]
