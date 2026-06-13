@@ -63,7 +63,6 @@ const Navbar = () => {
           >
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
-           
               <h2
                 className="
                 text-2xl
@@ -117,7 +116,7 @@ const Navbar = () => {
                 text-gray-600
                 dark:text-white/70
                 hover:text-green-600
-                transition-all
+                transition-all cursor-pointer
               "
               >
                 Resources
@@ -153,7 +152,7 @@ const Navbar = () => {
                   justify-center
                   text-gray-700
                   dark:text-white
-                  transition-all
+                  transition-all cursor-pointer
                 "
                 >
                   {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -318,7 +317,7 @@ const Navbar = () => {
                   items-center
                   justify-center
                   text-gray-700
-                  dark:text-white
+                  dark:text-white cursor-pointer
                 "
                 >
                   {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -340,7 +339,7 @@ const Navbar = () => {
                 items-center
                 justify-center
                 text-gray-700
-                dark:text-white
+                dark:text-white cursor-pointer
               "
               >
                 <HiX />

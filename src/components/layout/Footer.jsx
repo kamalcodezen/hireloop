@@ -1,171 +1,229 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../public/images/logo 1.png";
-import { FaFacebookF, FaPinterestP, FaLinkedinIn } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-black border-t border-white/5">
-      <div className="max-w-11/12 mx-auto px-6 lg:px-8 py-20">
-        {/* Top */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-16">
-          {/* Left */}
-          <div>
-            <Image
-              src={logo}
-              alt="HireLoop"
-              width={200}
-              height={60}
-              className="object-contain"
-            />
+    <footer className="border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#081C15]">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20">
+        <div className="grid lg:grid-cols-5 md:grid-cols-2 gap-12">
+          {/* Brand */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Hire
+                <span className="text-green-600">Edge</span>
+              </h2>
+            </div>
 
-            <p className="mt-8 max-w-md text-[17px] leading-10 text-white/35">
-              The AI-native career platform. Built for people who take their
-              work seriously.
+            <p className="mt-6 max-w-md text-gray-600 dark:text-white/60 leading-8">
+              AI-powered hiring platform connecting talented professionals with
+              leading companies worldwide. Build your future with smarter
+              recruiting.
             </p>
 
-            <div className="flex items-center gap-4 mt-20">
-              <Link
-                href="/"
-                className="w-14 h-14 rounded-xl bg-[#0f0f12] hover:bg-[#1b1b21] transition-all duration-300 flex items-center justify-center"
-              >
-                <FaFacebookF className="text-white/70 text-2xl" />
-              </Link>
+            <div className="flex gap-4 mt-8">
+              <div className="w-11 h-11 rounded-xl border border-gray-200 dark:border-white/10 flex items-center justify-center cursor-pointer hover:border-green-500 transition-all">
+                X
+              </div>
 
-              <Link
-                href="/"
-                className="w-14 h-14 rounded-xl bg-[#4F46E5] flex items-center justify-center"
-              >
-                <FaPinterestP className="text-white text-2xl" />
-              </Link>
+              <div className="w-11 h-11 rounded-xl border border-gray-200 dark:border-white/10 flex items-center justify-center cursor-pointer hover:border-green-500 transition-all">
+                in
+              </div>
 
-              <Link
-                href="/"
-                className="w-14 h-14 rounded-xl bg-[#0f0f12] hover:bg-[#1b1b21] transition-all duration-300 flex items-center justify-center"
-              >
-                <FaLinkedinIn className="text-white/70 text-2xl" />
-              </Link>
+              <div className="w-11 h-11 rounded-xl border border-gray-200 dark:border-white/10 flex items-center justify-center cursor-pointer hover:border-green-500 transition-all">
+                G
+              </div>
             </div>
           </div>
 
           {/* Product */}
           <div>
-            <h3 className="text-[#5B5AF7] text-3xl font-medium mb-10">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-5">
               Product
             </h3>
 
-            <ul className="space-y-7">
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Browse Jobs
-                </Link>
-              </li>
+            <div className="space-y-4">
+              <Link
+                href="/jobs"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Browse Jobs
+              </Link>
 
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Company
-                </Link>
-              </li>
+              <Link
+                href="/companies"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Companies
+              </Link>
 
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Pricing
-                </Link>
-              </li>
+              <Link
+                href="/talent"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Talent Search
+              </Link>
 
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Job Alerts
-                </Link>
-              </li>
-            </ul>
+              <Link
+                href="/pricing"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Pricing
+              </Link>
+            </div>
           </div>
 
-          {/* Navigation */}
+          {/* Company */}
           <div>
-            <h3 className="text-[#5B5AF7] text-3xl font-medium mb-10">
-              Navigations
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-5">
+              Company
             </h3>
 
-            <ul className="space-y-7">
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Help Center
-                </Link>
-              </li>
+            <div className="space-y-4">
+              <Link
+                href="/about"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                About Us
+              </Link>
 
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Career Library
-                </Link>
-              </li>
+              <Link
+                href="/careers"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Careers
+              </Link>
 
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
+              <Link
+                href="/blog"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Blog
+              </Link>
+
+              <Link
+                href="/contact"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Contact
+              </Link>
+            </div>
           </div>
 
           {/* Resources */}
           <div>
-            <h3 className="text-[#5B5AF7] text-3xl font-medium mb-10">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-5">
               Resources
             </h3>
 
-            <ul className="space-y-7">
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Brand Guideline
-                </Link>
-              </li>
+            <div className="space-y-4">
+              <Link
+                href="/help"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Help Center
+              </Link>
 
-              <li>
-                <Link
-                  href="/"
-                  className="text-white/35 hover:text-white transition-all text-xl"
-                >
-                  Newsroom
-                </Link>
-              </li>
-            </ul>
+              <Link
+                href="/privacy"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Privacy Policy
+              </Link>
+
+              <Link
+                href="/terms"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Terms of Service
+              </Link>
+
+              <Link
+                href="/security"
+                className="block text-gray-600 dark:text-white/60 hover:text-green-600"
+              >
+                Security
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Newsletter */}
+        <div className="mt-20 p-8 rounded-3xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-[#10251F]">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Stay Updated
+              </h3>
+
+              <p className="mt-2 text-gray-600 dark:text-white/60">
+                Get hiring trends, job opportunities, and product updates.
+              </p>
+            </div>
+
+            <div className="flex w-full lg:w-auto gap-3">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="
+                h-12
+                w-full
+                lg:w-[320px]
+                px-4
+                rounded-xl
+                border
+                border-gray-200
+                dark:border-white/10
+                bg-white
+                dark:bg-[#081C15]
+                outline-none
+              "
+              />
+
+              <button
+                className="
+                px-6
+                rounded-xl
+                bg-green-600
+                hover:bg-green-700
+                text-white
+                font-medium cursor-pointer
+              "
+              >
+                Subscribe
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-24 pt-8 border-t border-white/5 flex flex-col lg:flex-row items-center justify-between gap-6">
-          <p className="text-white/25 text-lg">Copyright 2026 — HireLoop</p>
+        <div className="mt-16 pt-8 border-t border-gray-200 dark:border-white/10 flex flex-col md:flex-row justify-between gap-4">
+          <p className="text-gray-600 dark:text-white/50">
+            © 2026 HireEdge. All rights reserved.
+          </p>
 
-          <div className="flex items-center gap-8 text-white/25 text-lg">
-            <Link href="/">Terms & Policy</Link>
-            <Link href="/">Privacy Guideline</Link>
+          <div className="flex gap-6">
+            <Link
+              href="/privacy"
+              className="text-gray-600 dark:text-white/50 hover:text-green-600"
+            >
+              Privacy
+            </Link>
+
+            <Link
+              href="/terms"
+              className="text-gray-600 dark:text-white/50 hover:text-green-600"
+            >
+              Terms
+            </Link>
+
+            <Link
+              href="/cookies"
+              className="text-gray-600 dark:text-white/50 hover:text-green-600"
+            >
+              Cookies
+            </Link>
           </div>
         </div>
       </div>
