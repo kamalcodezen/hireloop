@@ -1,71 +1,207 @@
 "use client";
-import logo from "../../../public/images/logo 1.png";
+
 import Link from "next/link";
-import { useState } from "react";
-import { HiMenu, HiX } from "react-icons/hi";
-import { Avatar } from "@heroui/react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { IoIosArrowDroprightCircle } from "react-icons/io";
-import { toast } from "react-toastify";
-import Image from "next/image";
+import { useTheme } from "next-themes";
+import { HiMenu, HiX } from "react-icons/hi";
+import { Sun, Moon, ChevronDown } from "lucide-react";
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  const links = [
-    { label: "Browse Jobs", path: "/" },
-    { label: "Company", path: "/" },
-    { label: "Pricing", path: "/" },
-  ];
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const user = false;
-  const isPending = false;
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const links = [
+    {
+      label: "Jobs",
+      path: "/jobs",
+    },
+    {
+      label: "Companies",
+      path: "/companies",
+    },
+    {
+      label: "Talent",
+      path: "/talent",
+    },
+    {
+      label: "Pricing",
+      path: "/pricing",
+    },
+  ];
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-50 pt-5">
-        <div className="w-[95%] max-w-7xl mx-auto">
-          <div className="h-[72px] rounded-2xl bg-[#121212]/95 backdrop-blur-2xl border border-white/10 shadow-[0_15px_50px_rgba(0,0,0,0.65)] px-6 lg:px-8 flex items-center">
+      {/* ================= NAVBAR ================= */}
+
+      <header className="fixed top-0 left-0 w-full z-[100]">
+        <div className="max-w-7xl mx-auto px-5 pt-5">
+          <div
+            className="
+            h-[60px]
+            rounded-2xl
+            bg-white/80
+            dark:bg-[#081C15]/80
+            backdrop-blur-xl
+            border
+            border-gray-200
+            dark:border-white/10
+            shadow-sm
+            flex
+            items-center
+            px-6
+            lg:px-8
+          "
+          >
             {/* Logo */}
-            <Link href="/">
-              <Image
-                src={logo}
-                alt="logo"
-                width={125}
-                height={32}
-                className="object-contain"
-              />
+            <Link href="/" className="flex items-center gap-3">
+           
+              <h2
+                className="
+                text-2xl
+                font-bold
+                text-gray-900
+                dark:text-white
+              "
+              >
+                Hire
+                <span className="text-green-600">Edge</span>
+              </h2>
             </Link>
 
-            {/* Desktop Menu + Auth */}
-            <div className="hidden md:flex items-center gap-10 ml-auto">
-              {links.map((link, ind) => (
+            {/* Desktop Menu */}
+            <nav
+              className="
+              hidden
+              md:flex
+              items-center
+              gap-10
+              ml-auto
+            "
+            >
+              {links.map((link) => (
                 <Link
-                  key={ind}
+                  key={link.label}
                   href={link.path}
-                  className={`text-sm font-medium transition-all duration-300 ${
+                  className={`
+                  text-sm
+                  font-medium
+                  transition-all
+                  ${
                     pathname === link.path
-                      ? "text-white"
-                      : "text-white/70 hover:text-white"
-                  }`}
+                      ? "text-green-600"
+                      : "text-gray-600 dark:text-white/70"
+                  }
+                  hover:text-green-600
+                `}
                 >
                   {link.label}
                 </Link>
               ))}
 
-              <div className="h-5 w-px bg-white/10 mx-2" />
+              <button
+                className="
+                flex
+                items-center
+                gap-1
+                text-sm
+                font-medium
+                text-gray-600
+                dark:text-white/70
+                hover:text-green-600
+                transition-all
+              "
+              >
+                Resources
+                <ChevronDown size={16} />
+              </button>
+            </nav>
+
+            {/* Right Side */}
+            <div
+              className="
+              hidden
+              md:flex
+              items-center
+              gap-4
+              ml-auto
+            "
+            >
+              {/* Theme Toggle */}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="
+                  w-11
+                  h-11
+                  rounded-xl
+                  border
+                  border-gray-200
+                  dark:border-white/10
+                  bg-white
+                  dark:bg-[#10251F]
+                  flex
+                  items-center
+                  justify-center
+                  text-gray-700
+                  dark:text-white
+                  transition-all
+                "
+                >
+                  {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
+              )}
 
               <Link
-                href="/login"
-                className="text-[#6F63FF] text-sm font-medium"
+                href="/auth/login"
+                className="
+                h-11
+                px-5
+                rounded-xl
+                border
+                border-gray-200
+                dark:border-white/10
+                flex
+                items-center
+                justify-center
+                text-sm
+                font-medium
+                text-gray-700
+                dark:text-white
+                hover:bg-gray-50
+                dark:hover:bg-[#10251F]
+                transition-all
+              "
               >
                 Sign In
               </Link>
 
               <Link
-                href="/signup"
-                className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#5B5AF7] to-[#7268FF] text-white text-sm font-medium shadow-[0_0_25px_rgba(111,99,255,0.35)]"
+                href="/auth/signup"
+                className="
+                h-11
+                px-6
+                rounded-xl
+                bg-green-600
+                hover:bg-green-700
+                text-white
+                text-sm
+                font-medium
+                flex
+                items-center
+                justify-center
+                transition-all
+                shadow-lg
+                shadow-green-500/20
+              "
               >
                 Get Started
               </Link>
@@ -74,92 +210,231 @@ const Navbar = () => {
             {/* Mobile Button */}
             <button
               onClick={() => setOpen(true)}
-              className="md:hidden ml-auto w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white text-2xl"
+              className="
+              md:hidden
+              ml-auto
+              w-11
+              h-11
+              rounded-xl
+              border
+              border-gray-200
+              dark:border-white/10
+              bg-white
+              dark:bg-[#10251F]
+              flex
+              items-center
+              justify-center
+              text-gray-700
+              dark:text-white
+            "
             >
               <HiMenu />
             </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* ================= MOBILE MENU ================= */}
+      {/* ================= OVERLAY ================= */}
 
       {open && (
         <div
           onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60]"
+          className="
+          fixed
+          inset-0
+          bg-black/50
+          backdrop-blur-sm
+          z-[150]
+        "
         />
       )}
 
+      {/* ================= MOBILE DRAWER ================= */}
+
       <div
-        className={`fixed top-0 left-0 h-screen w-[88%] max-w-sm z-[70] transition-all duration-500 ${
-          open ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`
+        fixed
+        top-0
+        left-0
+        h-screen
+        w-[85%]
+        max-w-sm
+        z-[200]
+        transition-transform
+        duration-500
+        ${open ? "translate-x-0" : "-translate-x-full"}
+      `}
       >
-        <div className="h-full bg-[#111111]/95 backdrop-blur-2xl border-r border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col">
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
-            <Image src={logo} alt="logo" width={120} height={30} />
-
-            <button
-              onClick={() => setOpen(false)}
-              className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white text-2xl"
+        <div
+          className="
+          h-full
+          bg-white
+          dark:bg-[#081C15]
+          border-r
+          border-gray-200
+          dark:border-white/10
+          flex
+          flex-col
+        "
+        >
+          {/* Mobile Header */}
+          <div
+            className="
+            flex
+            items-center
+            justify-between
+            p-6
+            border-b
+            border-gray-200
+            dark:border-white/10
+          "
+          >
+            <h2
+              className="
+              text-2xl
+              font-bold
+              text-gray-900
+              dark:text-white
+            "
             >
-              <HiX />
-            </button>
-          </div>
+              Hire
+              <span className="text-green-600">Edge</span>
+            </h2>
 
-          {/* Links */}
-          <div className="flex-1 px-6 py-8">
-            <div className="space-y-3">
-              {links.map((link, ind) => (
-                <Link
-                  key={ind}
-                  href={link.path}
-                  onClick={() => setOpen(false)}
-                  className={`group flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-300 ${
-                    pathname === link.path
-                      ? "bg-gradient-to-r from-[#5B5AF7]/20 to-[#7268FF]/20 border border-[#6F63FF]/30 text-white"
-                      : "bg-white/[0.02] border border-white/5 text-white/70 hover:text-white hover:bg-white/[0.05]"
-                  }`}
+            <div className="flex items-center gap-2">
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="
+                  w-10
+                  h-10
+                  rounded-xl
+                  border
+                  border-gray-200
+                  dark:border-white/10
+                  bg-white
+                  dark:bg-[#10251F]
+                  flex
+                  items-center
+                  justify-center
+                  text-gray-700
+                  dark:text-white
+                "
                 >
-                  <span>{link.label}</span>
+                  {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
+              )}
 
-                  <IoIosArrowDroprightCircle
-                    className={`text-xl ${
-                      pathname === link.path
-                        ? "text-[#7268FF]"
-                        : "text-white/30"
-                    }`}
-                  />
-                </Link>
-              ))}
+              <button
+                onClick={() => setOpen(false)}
+                className="
+                w-10
+                h-10
+                rounded-xl
+                border
+                border-gray-200
+                dark:border-white/10
+                bg-white
+                dark:bg-[#10251F]
+                flex
+                items-center
+                justify-center
+                text-gray-700
+                dark:text-white
+              "
+              >
+                <HiX />
+              </button>
             </div>
           </div>
 
-          {/* Bottom Buttons */}
-          <div className="p-6 border-t border-white/10">
-            <div className="space-y-3">
+          {/* Mobile Links */}
+          <div className="flex-1 p-6 space-y-3">
+            {links.map((link) => (
               <Link
-                href="/login"
+                key={link.label}
+                href={link.path}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center h-12 rounded-xl border border-white/10 bg-white/5 text-white"
+                className={`
+                block
+                px-4
+                py-4
+                rounded-xl
+                font-medium
+                transition-all
+                ${
+                  pathname === link.path
+                    ? "bg-green-600 text-white"
+                    : "bg-gray-100 dark:bg-[#10251F] text-gray-700 dark:text-white"
+                }
+              `}
               >
-                Sign In
+                {link.label}
               </Link>
+            ))}
 
-              <Link
-                href="/signup"
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-center h-12 rounded-xl bg-gradient-to-r from-[#5B5AF7] to-[#7268FF] text-white font-medium shadow-[0_0_25px_rgba(111,99,255,0.35)]"
-              >
-                Get Started
-              </Link>
-            </div>
+            <Link
+              href="/resources"
+              onClick={() => setOpen(false)}
+              className="
+              block
+              px-4
+              py-4
+              rounded-xl
+              font-medium
+              bg-gray-100
+              dark:bg-[#10251F]
+              text-gray-700
+              dark:text-white
+            "
+            >
+              Resources
+            </Link>
+          </div>
+
+          {/* Mobile Bottom */}
+          <div className="p-6 space-y-3 border-t border-gray-200 dark:border-white/10">
+            <Link
+              href="/auth/login"
+              onClick={() => setOpen(false)}
+              className="
+              flex
+              items-center
+              justify-center
+              h-12
+              rounded-xl
+              border
+              border-gray-200
+              dark:border-white/10
+              text-gray-700
+              dark:text-white
+            "
+            >
+              Sign In
+            </Link>
+
+            <Link
+              href="/auth/signup"
+              onClick={() => setOpen(false)}
+              className="
+              flex
+              items-center
+              justify-center
+              h-12
+              rounded-xl
+              bg-green-600
+              hover:bg-green-700
+              text-white
+              font-medium
+            "
+            >
+              Get Started
+            </Link>
           </div>
         </div>
       </div>
     </>
   );
 };
+
 export default Navbar;

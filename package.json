@@ -11,17 +11,24 @@
   "dependencies": {
     "@better-auth/kysely-adapter": "^1.6.16",
     "@better-auth/mongo-adapter": "^1.6.17",
+    "@gravity-ui/uikit": "github:gravity-ui/uikit",
     "@heroui/react": "^3.1.0",
     "@heroui/styles": "^3.1.0",
+    "@hookform/resolvers": "^5.4.0",
     "better-auth": "^1.6.17",
+    "framer-motion": "^12.40.0",
     "kysely": "^0.28.17",
-    "lucide-react": "^1.17.0",
+    "lucide-react": "^1.18.0",
     "mongodb": "^7.3.0",
     "next": "16.2.9",
+    "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-hook-form": "^7.79.0",
     "react-icons": "^5.6.0",
-    "react-toastify": "^11.1.0"
+    "react-toastify": "^11.1.0",
+    "recharts": "^3.8.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
