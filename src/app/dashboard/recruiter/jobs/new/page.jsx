@@ -1,8 +1,7 @@
 "use client";
 
 import { createJobs } from "@/lib/action/jobs";
-import { toast } from "@heroui/react";
-import { form } from "framer-motion/client";
+import { toast } from "react-toastify"; // আপনার প্রজেক্টের টোস্ট লাইব্রেরি কনফিগারেশন অনুযায়ী রাখুন
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -13,7 +12,7 @@ const NewJobs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Reset previous errors
+    setErrors({}); // পূর্বের এরর রিসেট করার জন্য
 
     const formFields = Object.fromEntries(new FormData(e.currentTarget));
 
@@ -31,6 +30,8 @@ const NewJobs = () => {
       responsibilities: formFields.responsibilities?.trim(),
       requirements: formFields.requirements?.trim(),
       benefits: formFields.benefits?.trim(),
+      company: formFields.company?.trim(),
+      status: "active",
     };
 
     // ================= Validation =================
@@ -88,16 +89,20 @@ const NewJobs = () => {
     if (!formData.responsibilities) {
       newErrors.responsibilities = "Responsibilities are required";
     } else if (formData.responsibilities.length < 10) {
-      newErrors.responsibilities = `Responsibilities must be at least 50 characters (Current: ${formData.responsibilities.length})`;
+      newErrors.responsibilities = `Responsibilities must be at least 10 characters (Current: ${formData.responsibilities.length})`;
     }
 
     if (!formData.requirements) {
       newErrors.requirements = "Requirements are required";
     } else if (formData.requirements.length < 10) {
-      newErrors.requirements = `Requirements must be at least 50 characters (Current: ${formData.requirements.length})`;
+      newErrors.requirements = `Requirements must be at least 10 characters (Current: ${formData.requirements.length})`;
     }
 
-    // Check if there are any errors accumulated
+    if (!formData.company) {
+      newErrors.company = "Company name is required";
+    }
+
+    // এরর চেক
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -107,11 +112,11 @@ const NewJobs = () => {
     try {
       const jobsData = await createJobs(formData);
       if (jobsData.insertedId) {
-        toast.success("Form Submitted Successfully!");
+        toast.success("Job Created Successfully!");
         router.refresh();
         router.push("/dashboard/recruiter/jobs");
       } else {
-        toast.error("Failed to submit idea");
+        toast.error("Failed to submit job");
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -333,7 +338,7 @@ const NewJobs = () => {
               <textarea
                 name="responsibilities"
                 rows={4}
-                placeholder="Describe the responsibilities... (Min 50 characters)"
+                placeholder="Describe the responsibilities... (Min 10 characters)"
                 className={`w-full rounded-lg border bg-background p-4 outline-none resize-none ${
                   errors.responsibilities ? "border-red-500" : "border-border"
                 }`}
@@ -353,7 +358,7 @@ const NewJobs = () => {
               <textarea
                 name="requirements"
                 rows={3}
-                placeholder="Describe requirements... (Min 50 characters)"
+                placeholder="Describe requirements... (Min 10 characters)"
                 className={`w-full rounded-lg border bg-background p-4 outline-none resize-none ${
                   errors.requirements ? "border-red-500" : "border-border"
                 }`}
@@ -385,25 +390,35 @@ const NewJobs = () => {
           <h2 className="text-xl font-semibold mb-6">Company Information</h2>
 
           <div className="grid lg:grid-cols-2 gap-6">
+            {/* Company Name */}
             <div>
               <label className="block mb-2 text-sm font-medium">
                 Company Name
               </label>
               <input
-                readOnly
-                value="HireEdge Inc."
-                className="w-full h-12 px-4 rounded-xl border border-border bg-muted outline-none"
+                name="company"
+                type="text"
+                placeholder="Enter Company Name"
+                className={`w-full h-12 px-4 rounded-lg border bg-background outline-none ${
+                  errors.company
+                    ? "border-red-500 focus:ring-1 focus:ring-red-500"
+                    : "border-border"
+                }`}
               />
+              {errors.company && (
+                <p className="text-red-500 text-xs mt-1">{errors.company}</p>
+              )}
             </div>
 
+            {/* Company Status */}
             <div>
               <label className="block mb-2 text-sm font-medium">
-                Company Status
+                Job Status
               </label>
               <input
                 readOnly
-                value="Approved"
-                className="w-full h-12 px-4 rounded-xl border border-border bg-muted outline-none"
+                value="active"
+                className="w-full h-12 px-4 rounded-lg border border-border bg-muted outline-none select-none capitalize text-green-600 font-semibold"
               />
             </div>
           </div>
