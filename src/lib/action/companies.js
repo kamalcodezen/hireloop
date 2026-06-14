@@ -1,6 +1,7 @@
 "use server"
 import { serverMutation } from "../core/server"
 
+// companies data post
 export const createCompany = async (companyData) => {
     return serverMutation("/api/companies", companyData)
 }

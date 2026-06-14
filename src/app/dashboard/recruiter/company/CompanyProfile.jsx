@@ -15,8 +15,8 @@ import {
 import { createCompany } from "@/lib/action/companies";
 import { toast } from "react-toastify";
 
-export default function CompanyProfile({ recruiter }) {
-  const [company, setCompany] = useState(null);
+export default function CompanyProfile({ recruiter, recruiterCompany }) {
+  const [company, setCompany] = useState(recruiterCompany);
   const [isEditing, setIsEditing] = useState(false);
   const [logoUrl, setLogoUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -311,13 +311,13 @@ export default function CompanyProfile({ recruiter }) {
   return (
     <div className="min-h-screen bg-background text-foreground p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-[0_0_40px_rgba(34,197,94,.04)]">
+        <div className="rounded-lg border border-border bg-card p-8 shadow-[0_0_40px_rgba(34,197,94,.04)]">
           <div className="flex flex-col lg:flex-row justify-between gap-8">
             <div className="flex items-center gap-5">
               <img
                 src={company.logo || "https://placehold.co/150x150"}
                 alt=""
-                className="w-28 h-28 rounded-3xl object-cover border border-border"
+                className="w-28 h-28 rounded-lg object-cover border border-border"
               />
 
               <div>
@@ -338,32 +338,32 @@ export default function CompanyProfile({ recruiter }) {
         </div>
 
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 mt-8">
-          <div className="rounded-3xl bg-card border border-border p-6">
+          <div className="rounded-lg bg-card border border-border p-6">
             <Globe className="text-green-500 dark:text-green-400" />
             <p className="text-muted-foreground mt-4">Website</p>
             <h3 className="font-semibold mt-2">{company.website}</h3>
           </div>
 
-          <div className="rounded-3xl bg-card border border-border p-6">
+          <div className="rounded-lg bg-card border border-border p-6">
             <Building2 className="text-green-500 dark:text-green-400" />
             <p className="text-muted-foreground mt-4">Industry</p>
             <h3 className="font-semibold mt-2">{company.industry}</h3>
           </div>
 
-          <div className="rounded-3xl bg-card border border-border p-6">
+          <div className="rounded-lg bg-card border border-border p-6">
             <MapPin className="text-green-500 dark:text-green-400" />
             <p className="text-muted-foreground mt-4">Location</p>
             <h3 className="font-semibold mt-2">{company.location}</h3>
           </div>
 
-          <div className="rounded-3xl bg-card border border-border p-6">
+          <div className="rounded-lg bg-card border border-border p-6">
             <Users className="text-green-500 dark:text-green-400" />
             <p className="text-muted-foreground mt-4">Employee Count</p>
             <h3 className="font-semibold mt-2">{company.employeeCount}</h3>
           </div>
         </div>
 
-        <div className="mt-8 rounded-3xl bg-card border border-border p-8">
+        <div className="mt-8 rounded-lg bg-card border border-border p-8">
           <h2 className="text-2xl font-bold mb-4">About Company</h2>
 
           <p className="text-muted-foreground leading-relaxed">
