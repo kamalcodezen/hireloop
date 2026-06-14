@@ -12,7 +12,7 @@ export const createJobs = async (newJobsData) => {
     })
     const data = await res.json()
 
-    console.log(data, "after jobs post")
+    // console.log(data, "after jobs post")
 
     return data;
 

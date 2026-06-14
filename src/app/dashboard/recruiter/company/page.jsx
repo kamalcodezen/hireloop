@@ -12,6 +12,8 @@ import {
   Clock3,
   XCircle,
 } from "lucide-react";
+import { createCompany } from "@/lib/action/companies";
+import { toast } from "react-toastify";
 
 export default function CompanyPage() {
   const [company, setCompany] = useState(null);
@@ -31,7 +33,7 @@ export default function CompanyPage() {
 
     try {
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_SERVER_IMAGE_UPLOAD_URL}`,
         {
           method: "POST",
           body: formData,
@@ -68,10 +70,16 @@ export default function CompanyPage() {
 
     console.log(companyData);
 
-    // await createCompany(companyData)
-
     setCompany(companyData);
     setIsEditing(false);
+
+    const payload = await createCompany(companyData);
+
+    if (payload.insertedId) {
+      toast.success("Company Created Successfully");
+    } else {
+      toast.error("Something went wrong");
+    }
   };
 
   const getStatusBadge = (status) => {
@@ -252,7 +260,7 @@ export default function CompanyPage() {
                 <img
                   src={logoUrl}
                   alt="logo"
-                  className="w-28 h-28 object-cover rounded-2xl mt-6 border border-border"
+                  className="w-28 h-28 object-cover rounded-md mt-6 border border-border"
                 />
               )}
 
