@@ -67,7 +67,7 @@ export default function Banner() {
 
                 <button
                   className="
-                  h-14
+                  h-12
                   px-8
                   rounded-2xl
                   bg-green-600
