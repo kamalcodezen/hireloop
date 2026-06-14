@@ -6,7 +6,7 @@ const RecruiterJobs = async () => {
 
   return (
     <div>
-      <AllJobsPage />
+      {/* <AllJobsPage /> */}
     </div>
   );
 };
