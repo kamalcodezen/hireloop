@@ -1,10 +1,12 @@
 "use client";
 
-import { submitJobApplication } from "@/lib/action/applyJobs";
+import { submitJobApplication } from "@/lib/action/applicant";
 import { Briefcase, Calendar, FileText, MapPin } from "lucide-react";
 import { toast } from "react-toastify";
 
-const ApplyForm = ({ job, user }) => {
+const ApplyForm = ({ applicant, job }) => {
+
+
   const handleApply = async (e) => {
     e.preventDefault();
 
@@ -15,8 +17,8 @@ const ApplyForm = ({ job, user }) => {
       phone: form.phone.value,
       resumeUrl: form.resumeUrl.value,
       coverLetter: form.coverLetter.value,
-      userId: user?._id,
-      userEmail: user?.email,
+      applicantId: applicant?.id,
+      applicantEmail: applicant?.email,
       jobId: job?._id,
       companyId: job?.companyId,
       companyName: job?.companyName,
@@ -72,7 +74,7 @@ const ApplyForm = ({ job, user }) => {
                       type="text"
                       name="fullName" /* FIXED: Added name attribute */
                       required
-                      defaultValue={user?.name}
+                      defaultValue={applicant?.name}
                       className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground outline-none focus:border-green-500 transition-colors"
                     />
                   </div>
