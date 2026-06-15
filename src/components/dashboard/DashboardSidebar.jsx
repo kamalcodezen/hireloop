@@ -236,8 +236,10 @@ const DashboardSidebar = () => {
       >
         <div>
           <h2 className="text-3xl font-bold">
-            Hire
-            <span className="text-green-600">Edge</span>
+            <Link href="/">
+              Hire
+              <span className="text-green-600">Edge</span>
+            </Link>
           </h2>
 
           <p className="text-sm text-muted-foreground mt-1">Dashboard Panel</p>

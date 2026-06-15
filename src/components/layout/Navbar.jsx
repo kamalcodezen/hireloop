@@ -46,8 +46,8 @@ const Navbar = () => {
 
   const links = [
     {
-      label: "Jobs",
-      path: "/",
+      label: "Browse Jobs",
+      path: "/jobs",
     },
     {
       label: "Companies",

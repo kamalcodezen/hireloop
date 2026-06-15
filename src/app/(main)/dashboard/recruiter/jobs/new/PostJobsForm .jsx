@@ -4,7 +4,7 @@ import { createJobs } from "@/lib/action/jobs";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Briefcase } from "lucide-react"; 
+import { Briefcase } from "lucide-react";
 import Link from "next/link";
 
 const PostJobsForm = ({ company = { name: "Your Company" } }) => {
@@ -66,6 +66,7 @@ const PostJobsForm = ({ company = { name: "Your Company" } }) => {
       status: "active",
       companyId: company?._id,
       companyName: company?.name,
+      companyLogo: company?.logo,
       companyLocation: company?.location,
       companyRecruiterId: company?.recruiterId,
     };
