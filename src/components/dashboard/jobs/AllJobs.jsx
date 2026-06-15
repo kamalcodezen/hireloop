@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { companiesData } from "@/lib/api/jobs";
+import { companiesData, getCompaniesJobs } from "@/lib/api/jobs";
 import {
   Calendar,
   DollarSign,
@@ -9,11 +9,12 @@ import {
   Trash2,
   Eye,
 } from "lucide-react";
+import { getLoggedRecruiterCompany } from "@/lib/api/companies";
 
 const AllJobsPage = async () => {
-  const company = "infosys";
+  const company = await getLoggedRecruiterCompany();
 
-  const jobs = await companiesData(company);
+  const jobs = (await getCompaniesJobs(company._id)) || [];
 
   return (
     <section className="max-w-7xl mx-auto p-4 lg:p-6">
@@ -86,8 +87,6 @@ const AllJobsPage = async () => {
                 <p className="text-muted-foreground text-sm mt-1">
                   {job.company}
                 </p>
-
-              
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mt-4">

@@ -4,12 +4,43 @@ import { createJobs } from "@/lib/action/jobs";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Briefcase } from "lucide-react"; // Briefcase আইকনটি যুক্ত করা হয়েছে
+import { Briefcase } from "lucide-react"; 
+import Link from "next/link";
 
 const PostJobsForm = ({ company = { name: "Your Company" } }) => {
   const [isRemote, setIsRemote] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
+  // company na thakle ata show hobe
+  if (!company?._id) {
+    return (
+      <div className="rounded-lg border border-border bg-card p-10 text-center py-40">
+        <h2 className="text-2xl font-bold">Register Your Company First</h2>
+
+        <p className="mt-2 text-muted-foreground">
+          You need to create a company profile before posting jobs.
+        </p>
+
+        <Link
+          href="/dashboard/recruiter/company"
+          className="
+          inline-flex
+          mt-6
+          h-10
+          px-6
+          items-center
+          rounded-xl
+          bg-green-600
+          hover:bg-green-700
+          text-white
+        "
+        >
+          Register Company
+        </Link>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,8 +62,12 @@ const PostJobsForm = ({ company = { name: "Your Company" } }) => {
       responsibilities: formFields.responsibilities?.trim(),
       requirements: formFields.requirements?.trim(),
       benefits: formFields.benefits?.trim(),
-      company: formFields.company?.trim(),
+      // company: formFields.company?.trim(),
       status: "active",
+      companyId: company?._id,
+      companyName: company?.name,
+      companyLocation: company?.location,
+      companyRecruiterId: company?.recruiterId,
     };
 
     // ================= Validation =================
@@ -99,9 +134,9 @@ const PostJobsForm = ({ company = { name: "Your Company" } }) => {
       newErrors.requirements = `Requirements must be at least 10 characters (Current: ${formData.requirements.length})`;
     }
 
-    if (!formData.company) {
-      newErrors.company = "Company name is required";
-    }
+    // if (!formData.company) {
+    //   newErrors.company = "Company name is required";
+    // }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -168,7 +203,7 @@ const PostJobsForm = ({ company = { name: "Your Company" } }) => {
                 <p className="text-red-500 text-xs mt-1">{errors.title}</p>
               )}
             </div>
- 
+
             {/* Category */}
             <div>
               <label className="block mb-2 text-sm font-medium text-muted-foreground">
@@ -430,7 +465,7 @@ const PostJobsForm = ({ company = { name: "Your Company" } }) => {
 
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Company Name */}
-            <div>
+            {/* <div>
               <label className="block mb-2 text-sm font-medium text-muted-foreground">
                 Company Name
               </label>
@@ -447,7 +482,7 @@ const PostJobsForm = ({ company = { name: "Your Company" } }) => {
               {errors.company && (
                 <p className="text-red-500 text-xs mt-1">{errors.company}</p>
               )}
-            </div>
+            </div> */}
 
             {/* Company Status */}
             <div>

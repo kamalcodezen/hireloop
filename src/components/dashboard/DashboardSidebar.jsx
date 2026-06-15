@@ -80,8 +80,10 @@ const DashboardSidebar = () => {
       "
       >
         <h2 className="text-xl font-bold">
-          Hire
-          <span className="text-green-600">Edge</span>
+          <Link href="/">
+            Hire
+            <span className="text-green-600">Edge</span>
+          </Link>
         </h2>
 
         <button

@@ -69,7 +69,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
       recruiterId: recruiter?.id,
     };
 
-    console.log(companyData);
+    // console.log(companyData);
 
     setCompany(companyData);
     setIsEditing(false);
@@ -114,7 +114,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
      NO COMPANY REGISTERED
   ========================== */
 
-  if (!company && !isEditing) {
+  if (!company?._id && !isEditing) {
     return (
       <div className="min-h-screen bg-background text-foreground p-6">
         <div className="max-w-5xl mx-auto">
@@ -149,7 +149,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
      REGISTER / EDIT FORM
   ========================== */
 
-  if (!company || isEditing) {
+  if (!company?._id || isEditing) {
     return (
       <div className="min-h-screen bg-background text-foreground p-6">
         <div className="max-w-5xl mx-auto">
