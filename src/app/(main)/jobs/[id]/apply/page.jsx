@@ -1,10 +1,14 @@
 import { getUserSession } from "@/lib/core/session";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import JobApply from "./JobApply";
+import { getJobDetailsById } from "@/lib/api/jobs";
 
-const ApplyForJobPage = async ({ params }) => {
+const JobApplyPage = async ({ params }) => {
   const { id } = await params;
   const user = await getUserSession();
+
+  const job = await getJobDetailsById(id);
 
   if (!user) {
     redirect(`/login?redirect=/jobs/${id}/apply`);
@@ -73,9 +77,9 @@ const ApplyForJobPage = async ({ params }) => {
 
   return (
     <div>
-      <h2>Apply for this page</h2>
+      <JobApply applicant={user} job={job} />
     </div>
   );
 };
 
-export default ApplyForJobPage;
+export default JobApplyPage;
