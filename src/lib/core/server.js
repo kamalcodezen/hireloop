@@ -6,7 +6,7 @@ const baseurl = process.env.NEXT_PUBLIC_SERVER_URL
 // read get
 export const serverFetch = async (path) => {
     const res = await fetch(`${baseurl}${path}`)
-    return  res.json()
+    return await res.json()
 }
 
 // post 
