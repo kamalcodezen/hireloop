@@ -18,7 +18,7 @@ import {
 
 import { authClient } from "@/lib/auth-client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -26,6 +26,9 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get(`redirect`) || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,7 +77,7 @@ export default function RegisterForm() {
 
             setTimeout(() => {
               router.refresh();
-              router.push("/");
+              router.push(redirectTo);
             }, 200);
           },
 
@@ -544,10 +547,7 @@ export default function RegisterForm() {
                   Select Role
                 </label>
 
-                <div
-               
-                  className="flex items-center gap-6"
-                >
+                <div className="flex items-center gap-6">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
@@ -657,7 +657,7 @@ export default function RegisterForm() {
             >
               Already have an account?
               <Link
-                href="/login"
+                href={`/login?redirect=${redirectTo}`}
                 className="
                 ml-2
                 text-green-600

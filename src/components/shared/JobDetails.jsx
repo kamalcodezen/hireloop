@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   MapPin,
-  DollarSign,
   Calendar,
   Briefcase,
   Building2,
@@ -70,9 +69,10 @@ const JobDetails = ({ jobs }) => {
 
             {/* Buttons */}
             <div className="flex flex-wrap gap-3 mt-8">
-              <button
+              <Link
+                href={`/jobs/${jobs?._id}/apply`}
                 className="
-                  h-12
+                  py-2
                   px-8
                   rounded-xl
                   bg-green-600
@@ -86,7 +86,7 @@ const JobDetails = ({ jobs }) => {
               >
                 Apply Now
                 <ArrowRight size={18} />
-              </button>
+              </Link>
 
               <button
                 className="
@@ -208,9 +208,10 @@ const JobDetails = ({ jobs }) => {
             <p className="text-sm text-muted-foreground">{jobs.companyName}</p>
           </div>
 
-          <button
+          <Link
+            href={`/jobs/${jobs?._id}/apply`}
             className="
-              h-11
+              py-3
               px-8
               rounded-xl
               bg-green-600
@@ -220,7 +221,7 @@ const JobDetails = ({ jobs }) => {
             "
           >
             Apply Now
-          </button>
+          </Link>
         </div>
       </div>
     </section>
