@@ -12,7 +12,7 @@ const JobCard = ({ job }) => {
       {/* Normal View */}
       <div className="p-6 transition-all duration-500 group-hover:-translate-y-full">
         <div className="flex flex-col items-center text-center">
-          <div className="h-16 w-24 rounded-3xl bg-background border border-border flex items-center justify-center">
+          <div className="h-16 w-24   flex items-center justify-center">
             <img
               src={job.companyLogo}
               alt={job.companyName}
