@@ -59,6 +59,17 @@ const Navbar = () => {
     },
   ];
 
+  const dashboardLinks = {
+    seeker: "/dashboard/seeker",
+    recruiter: "/dashboard/recruiter",
+  };
+
+  if (user?.email) {
+    links.push({
+      label: "Dashboard",
+      path: dashboardLinks[user?.role || "seeker"],
+    });
+  }
   return (
     <>
       {/* ================= NAVBAR ================= */}

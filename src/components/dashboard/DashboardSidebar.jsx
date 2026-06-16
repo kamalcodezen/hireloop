@@ -21,7 +21,7 @@ const DashboardSidebar = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const menus = [
+  const recruiterNavLinks = [
     {
       title: "Home",
       href: "/dashboard/recruiter",
@@ -58,6 +58,43 @@ const DashboardSidebar = () => {
       icon: Settings,
     },
   ];
+
+  const seekerNavLinks = [
+    {
+      title: "Dashboard",
+      href: "/dashboard/seeker",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Jobs",
+      href: "/jobs",
+      icon: Search,
+    },
+    {
+      title: "Saved Jobs",
+      href: "/dashboard/seeker/saved-jobs",
+      icon: Bookmark,
+    },
+    {
+      title: "Applications",
+      href: "/dashboard/seeker/applications",
+      icon: FileText,
+    },
+    {
+      title: "Billing",
+      href: "/dashboard/seeker/billing",
+      icon: CreditCard,
+    },
+    {
+      title: "Settings",
+      href: "/dashboard/seeker/settings",
+      icon: Settings,
+    },
+  ];
+
+
+  
+  const menus = [];
 
   return (
     <>
