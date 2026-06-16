@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // FIXED: Seeker এবং Recruiter এর জন্য প্রয়োজনীয় সব আইকন একসঙ্গে ইম্পোর্ট করা হয়েছে
 import {
@@ -18,15 +18,34 @@ import {
   Search,
   Bookmark,
   CreditCard,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
+
+  // logout function
+  const handleSignOut = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("See you soon! 👋 Logged out successfully", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+          router.push("/");
+          router.refresh();
+        },
+      },
+    });
+  };
 
   // Recruiter Dashboard Links
   const recruiterNavLinks = [
@@ -96,9 +115,43 @@ const DashboardSidebar = () => {
     },
   ];
 
+  const adminNavLinks = [
+    {
+      title: "Dashboard",
+      href: "/dashboard/admin",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Users",
+      href: "/dashboard/admin/users",
+      icon: Users,
+    },
+    {
+      title: "Companies",
+      href: "/dashboard/admin/companies",
+      icon: Building2,
+    },
+    {
+      title: "Jobs",
+      href: "/dashboard/admin/jobs",
+      icon: BriefcaseBusiness,
+    },
+    {
+      title: "Payments",
+      href: "/dashboard/admin/payments",
+      icon: CreditCard,
+    },
+    {
+      title: "Settings",
+      href: "/dashboard/admin/settings",
+      icon: Settings,
+    },
+  ];
+
   const dashboardNavLinks = {
     seeker: seekerNavLinks,
     recruiter: recruiterNavLinks,
+    admin: adminNavLinks,
   };
 
   // ইউজারের রোল অনুযায়ী মেনু সিলেক্ট করা (ডিফল্ট: seeker)
@@ -227,7 +280,11 @@ const DashboardSidebar = () => {
 
         {/* Logout Button Desktop */}
         <div className="mt-auto pt-4 border-t border-border/60">
-          <button className="w-full h-11 rounded-xl border border-red-500/20 text-red-500 hover:bg-red-500/10 flex items-center justify-center gap-2 font-semibold text-sm transition-colors cursor-pointer">
+          <button
+            onClick={handleSignOut}
+            type="submit"
+            className="w-full h-11 rounded-xl border border-red-500/20 text-red-500 hover:bg-red-500/10 flex items-center justify-center gap-2 font-semibold text-sm transition-colors cursor-pointer"
+          >
             <LogOut size={16} />
             Logout
           </button>

@@ -62,6 +62,7 @@ const Navbar = () => {
   const dashboardLinks = {
     seeker: "/dashboard/seeker",
     recruiter: "/dashboard/recruiter",
+    admin: "/dashboard/admin",
   };
 
   if (user?.email) {
@@ -70,7 +71,6 @@ const Navbar = () => {
       path: dashboardLinks[user?.role || "seeker"],
     });
   }
-
 
   // যদি ইউআরএল /dashboard দিয়ে শুরু হয়, তবে মেইন নেভবার নিজেকে লুকিয়ে ফেলবে (কিছুই রেন্ডার করবে না)
   if (pathname.startsWith("/dashboard")) {
