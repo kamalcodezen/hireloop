@@ -11,6 +11,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import * as motion from "framer-motion/client";
+import { email } from "zod";
+import { metadata } from "@/app/layout";
+import { submitSubscriptionByInfo } from "@/lib/action/subscription";
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
@@ -19,19 +22,27 @@ export default async function Success({ searchParams }) {
     throw new Error("Please provide a valid session_id");
   }
 
-  const session = await stripe.checkout.sessions.retrieve(session_id, {
+  const {
+    status,
+    customer_details: { email: customerEmail },
+    metadata,
+  } = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ["line_items", "payment_intent"],
   });
-
-  const { status, customer_details } = session;
-
-  const customerEmail = customer_details?.email || "";
 
   if (status === "open") {
     return redirect("/");
   }
 
   if (status === "complete") {
+    const subsInfo = {
+      email: customerEmail,
+      planId: metadata.planId,
+    };
+
+    const result = await submitSubscriptionByInfo(subsInfo);
+    console.log(result);
+
     return (
       <section className="relative min-h-screen overflow-hidden bg-background text-foreground flex items-center justify-center px-4 py-10">
         {/* Background Effects */}
