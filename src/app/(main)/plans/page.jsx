@@ -260,15 +260,23 @@ export default function PlansPage() {
               </div>
 
               {/* CTA Action Button */}
-              <button
-                className={`w-full h-12 rounded-xl font-bold text-sm transition-all cursor-pointer ${
-                  plan.popular
-                    ? "bg-green-600 hover:bg-green-700 text-white shadow-[0_4px_20px_rgba(34,197,94,0.2)]"
-                    : "bg-muted hover:bg-border border border-border text-foreground"
-                }`}
-              >
-                {plan.cta}
-              </button>
+              <div>
+                <form action="/api/checkout_sessions" method="POST">
+                  <section>
+                    <button
+                      className={`w-full h-12 rounded-xl font-bold text-sm transition-all cursor-pointer ${
+                        plan.popular
+                          ? "bg-green-600 hover:bg-green-700 text-white shadow-[0_4px_20px_rgba(34,197,94,0.2)]"
+                          : "bg-muted hover:bg-border border border-border text-foreground"
+                      }`}
+                      type="submit"
+                      role="link"
+                    >
+                      {plan.cta}
+                    </button>
+                  </section>
+                </form>
+              </div>
             </div>
           ))}
         </motion.div>
