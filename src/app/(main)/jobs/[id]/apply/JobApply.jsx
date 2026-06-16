@@ -2,10 +2,11 @@
 
 import { submitJobApplication } from "@/lib/action/applicant";
 import { Briefcase, Calendar, FileText, MapPin } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const ApplyForm = ({ applicant, job }) => {
-
+  const router = useRouter();
 
   const handleApply = async (e) => {
     e.preventDefault();
@@ -27,17 +28,17 @@ const ApplyForm = ({ applicant, job }) => {
       //   appliedAt: new Date(),
     };
 
-    console.log("Application Submitted Data:", applicationData);
+    try {
+      const res = await submitJobApplication(applicationData);
 
-    const payload = await submitJobApplication(applicationData);
-
-    if (payload.insertedId) {
-      toast.success("Apply successFull");
-    } else {
+      if (res?.success || res?.insertedId) {
+        toast.success("Application Submitted Successfully!");
+        router.refresh();
+      }
+    } catch (error) {
       toast.error("Something went wrong");
     }
   };
-
   return (
     <section className="relative overflow-hidden py-20 bg-background text-foreground">
       {/* Light Mode Glow */}

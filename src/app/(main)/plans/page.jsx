@@ -29,6 +29,7 @@ const seekerPlans = [
   },
   {
     name: "Pro",
+    id: "seeker_pro",
     price: "$19",
     period: "/month",
     desc: "Boost your job hunt with advanced tracking and insights.",
@@ -43,6 +44,7 @@ const seekerPlans = [
   },
   {
     name: "Premium",
+    id: "seeker_premium",
     price: "$39",
     period: "/month",
     desc: "Maximum visibility and unlimited power for your career.",
@@ -74,6 +76,7 @@ const recruiterPlans = [
   },
   {
     name: "Growth",
+    id: "recruiter_growth",
     price: "$49",
     period: "/month",
     desc: "Scale your hiring process with advanced tracking tools.",
@@ -88,6 +91,7 @@ const recruiterPlans = [
   },
   {
     name: "Enterprise",
+    id: "recruiter_enterprise",
     price: "$149",
     period: "/month",
     desc: "Complete hiring suite with custom tools for large teams.",
@@ -262,6 +266,7 @@ export default function PlansPage() {
               {/* CTA Action Button */}
               <div>
                 <form action="/api/checkout_sessions" method="POST">
+                  <input type="hidden" name="plan_id" value={plan?.id} />
                   <section>
                     <button
                       className={`w-full h-12 rounded-xl font-bold text-sm transition-all cursor-pointer ${

@@ -40,6 +40,7 @@ export default function RegisterForm() {
     const password = formData.password;
     const confirmPassword = formData.confirmPassword;
     const role = formData.role;
+    const plan = role === "seeker" ? "seeker_free" : "recruiter_free";
 
     if (!name || !email || !password || !confirmPassword) {
       toast.error("Please fill all fields");
@@ -65,6 +66,7 @@ export default function RegisterForm() {
           email,
           password,
           role,
+          plan,
         },
         {
           onRequest: () => {

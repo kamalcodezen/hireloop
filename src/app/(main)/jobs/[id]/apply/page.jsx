@@ -4,21 +4,20 @@ import { redirect } from "next/navigation";
 import JobApply from "./JobApply";
 import { getJobDetailsById } from "@/lib/api/jobs";
 import { getApplicationByApplicant } from "@/lib/api/applicant";
-import { Rocket, AlertTriangle, ShieldAlert } from "lucide-react";
+import { getUserPlansById } from "@/lib/api/plans";
+import { Rocket, AlertTriangle, ShieldAlert, FileSearch } from "lucide-react";
 
 const JobApplyPage = async ({ params }) => {
   const { id } = await params;
   const user = await getUserSession();
 
-
-  // user login na thakle login korte niye jabe redirect kore
+  // ১. সিকিউরিটি চেক: ইউজার লগইন না থাকলে রিডাইরেক্ট
   if (!user) {
     redirect(`/login?redirect=/jobs/${id}/apply`);
   }
 
-  
-  // job seeker nahole ei sms dekhabo age jete debo na
-  if (user.role !== "seeker") {
+  // ২. রোল ভ্যালিডেশন: শুধুমাত্র Job Seeker-দের জন্য প্রবেশাধিকার
+  if (user?.role !== "seeker") {
     return (
       <div className="w-11/12 mx-auto min-h-[75vh] flex items-center justify-center pt-28 text-foreground bg-background">
         <div className="max-w-lg w-full rounded-3xl border border-border bg-card p-8 text-center shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
@@ -43,21 +42,40 @@ const JobApplyPage = async ({ params }) => {
     );
   }
 
-  // ৩. ডাটাবেজ থেকে ডেটা কালেকশন
-  const job = await getJobDetailsById(id);
+  // ৩. পারফরম্যান্স অপ্টিমাইজেশন: Promise.all দিয়ে ৩টি এপিআই কল একসঙ্গে প্যারালালে রান করানো হয়েছে
+  const [job, applications, plan] = await Promise.all([
+    getJobDetailsById(id),
+    getApplicationByApplicant(user?.id),
+    getUserPlansById(user?.plan || "seeker"),
+  ]);
 
-  // amr ei user id id job collection gulo dao
-  const applications = (await getApplicationByApplicant(user?.id)) || [];
+  // ৪. সেফটি গার্ড: যদি জবের আইডি ভুল হয় বা ডাটাবেজে জব না থাকে
+  if (!job) {
+    return (
+      <div className="w-11/12 mx-auto min-h-[75vh] flex items-center justify-center pt-28 text-foreground bg-background">
+        <div className="max-w-md w-full rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
+          <div className="h-16 w-16 mx-auto rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center">
+            <FileSearch size={32} />
+          </div>
+          <h1 className="mt-6 text-xl font-bold tracking-tight">
+            Job Not Found
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            The position you are looking for does not exist or has been removed.
+          </p>
+          <Link
+            href="/jobs"
+            className="mt-6 inline-flex items-center justify-center h-11 px-6 rounded-xl border border-border text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Back to Jobs
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
-  // ৪. সাময়িকভাবে ফলব্যাক/ডামি প্ল্যান কনফিগারেশন (যাতে ডাটাবেজ ছাড়া ক্র্যাশ না করে)
-  const plan = {
-    name: "Free Seeker",
-    maxApplicationsPerMonth: 3, 
-  };
-
- 
-  // akta job apply korle oi company te ar korte debo na
-  const alreadyApplied = applications.find(
+  // ৫. ডুপ্লিকেট সাবমিশন গার্ড: একই জবে অলরেডি অ্যাপ্লাইড থাকলে আটকে দেবে
+  const alreadyApplied = applications?.find(
     (application) => application.jobId === id,
   );
 
@@ -94,21 +112,20 @@ const JobApplyPage = async ({ params }) => {
     );
   }
 
-  // ৬. লিমিট বা কোটা ক্যালকুলেশন
+  // ৬. কোটা বা সাবমিশন লিমিট ক্যালকুলেশন
   const applicationCount = applications?.length || 0;
-  const hasReachedLimit = applicationCount >= plan.maxApplicationsPerMonth;
+  
+  const maxAllowed = plan?.maxApplicationsPerMonth || 3; // ফলব্যাক ভ্যালু ৩ রাখা হয়েছে
+  const hasReachedLimit = applicationCount >= maxAllowed;
 
   // প্রোগ্রেস বারের জন্য রেশিও/পারসেন্টেজ ক্যালকুলেশন
-  const usagePercentage = Math.min(
-    (applicationCount / plan.maxApplicationsPerMonth) * 100,
-    100,
-  );
+  const usagePercentage = Math.min((applicationCount / maxAllowed) * 100, 100);
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-11/12 mx-auto">
-        {/* কোটা ট্র্যাকার কার্ড (HireEdge প্রিমিয়াম UI থিম) */}
-        <div className="bg-card border border-border rounded py-3 px-6 shadow-[0_4px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_4px_30px_rgba(34,197,94,0.01)]">
+      <div className="max-w-3xl mx-auto space-y-8">
+        {/* কোটা ট্র্যাকার কার্ড */}
+        <div className="bg-card border border-border rounded-3xl p-6 shadow-[0_4px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_4px_30px_rgba(34,197,94,0.01)]">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
@@ -121,14 +138,16 @@ const JobApplyPage = async ({ params }) => {
                 </span>{" "}
                 out of{" "}
                 <span className="text-muted-foreground font-semibold">
-                  {plan.maxApplicationsPerMonth}
+                  {maxAllowed}
                 </span>{" "}
                 positions
               </h2>
             </div>
             <span className="self-start sm:self-center px-3 py-1.5 text-xs font-semibold rounded-full bg-muted border border-border text-muted-foreground">
               Current Plan:{" "}
-              <strong className="text-foreground font-bold">{plan.name}</strong>
+              <strong className="text-foreground font-bold">
+                {plan?.name || "Free"}
+              </strong>
             </span>
           </div>
 
@@ -166,8 +185,8 @@ const JobApplyPage = async ({ params }) => {
 
         {/* ফর্ম অথবা লকআউট স্টেট রেন্ডারিং */}
         {hasReachedLimit ? (
-          /* লিমিট শেষ হলে এই ভিউটি দেখাবে */
-          <div className="bg-card border border-dashed border-border rounded p-10 text-center flex flex-col items-center justify-center shadow-sm">
+          /* লিমিট শেষ হলে এই লকআউট ভিউটি দেখাবে */
+          <div className="bg-card border border-dashed border-border rounded-3xl p-10 text-center flex flex-col items-center justify-center shadow-sm">
             <div className="w-12 h-12 bg-red-500/10 text-red-500 rounded-2xl flex items-center justify-center mb-4">
               <AlertTriangle className="w-6 h-6" />
             </div>
@@ -186,7 +205,7 @@ const JobApplyPage = async ({ params }) => {
             </Link>
           </div>
         ) : (
-          /* একটিভ ফর্ম ভিউ (সব ঠিক থাকলে ফর্মটি আসবে) */
+          /* একটিভ ফর্ম ভিউ (সব ঠিক থাকলে মেইন ফর্ম লোড হবে) */
           <div className="animate-in fade-in-50 duration-300">
             <JobApply applicant={user} job={job} />
           </div>
