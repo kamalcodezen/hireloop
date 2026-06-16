@@ -4,34 +4,37 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
+// FIXED: Seeker এবং Recruiter এর জন্য প্রয়োজনীয় সব আইকন একসঙ্গে ইম্পোর্ট করা হয়েছে
 import {
   LayoutDashboard,
-  User,
-  FileText,
   Briefcase,
+  FileText,
+  Building2,
   Users,
   Settings,
   Menu,
   X,
   LogOut,
-  Building2,
+  Search,
+  Bookmark,
+  CreditCard,
 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+
+  // Recruiter Dashboard Links
   const recruiterNavLinks = [
     {
       title: "Home",
       href: "/dashboard/recruiter",
       icon: LayoutDashboard,
     },
-    // {
-    //   title: "Jobs",
-    //   href: "/dashboard/recruiter/jobs",
-    //   icon: User,
-    // },
     {
       title: "Jobs",
       href: "/dashboard/recruiter/jobs",
@@ -49,16 +52,17 @@ const DashboardSidebar = () => {
     },
     {
       title: "Applicants",
-      href: "/dashboard/applicants",
+      href: "/dashboard/recruiter",
       icon: Users,
     },
     {
       title: "Settings",
-      href: "/dashboard/settings",
+      href: "/dashboard/recruiter",
       icon: Settings,
     },
   ];
 
+  // Seeker Dashboard Links
   const seekerNavLinks = [
     {
       title: "Dashboard",
@@ -92,243 +96,139 @@ const DashboardSidebar = () => {
     },
   ];
 
+  const dashboardNavLinks = {
+    seeker: seekerNavLinks,
+    recruiter: recruiterNavLinks,
+  };
 
-  
-  const menus = [];
+  // ইউজারের রোল অনুযায়ী মেনু সিলেক্ট করা (ডিফল্ট: seeker)
+  const menus = dashboardNavLinks[user?.role || "seeker"];
 
   return (
     <>
-      {/* ================= MOBILE TOPBAR ================= */}
-
-      <div
-        className="
-        lg:hidden
-        h-16
-        border-b
-        border-gray-200
-        dark:border-white/10
-        bg-white
-        dark:bg-[#081C15]
-        px-4
-        flex
-        items-center
-        justify-between
-        
-      "
-      >
-        <h2 className="text-xl font-bold">
+      {/* ================= FIXED: MOBILE TOPBAR ================= */}
+      <div className="lg:hidden h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-40">
+        <h2 className="text-xl font-bold tracking-tight text-foreground">
           <Link href="/">
-            Hire
-            <span className="text-green-600">Edge</span>
+            Hire<span className="text-green-600 dark:text-green-400">Edge</span>
           </Link>
         </h2>
 
         <button
           onClick={() => setOpen(true)}
-          className="
-          w-10
-          h-10
-          rounded-lg
-          border
-          border-gray-200
-          dark:border-white/10
-          flex
-          items-center
-          justify-center cursor-pointer
-        "
+          className="w-10 h-10 rounded-xl border border-border bg-background flex items-center justify-center text-foreground cursor-pointer hover:bg-muted transition-colors"
         >
           <Menu size={20} />
         </button>
       </div>
 
       {/* ================= MOBILE OVERLAY ================= */}
-
       {open && (
         <div
           onClick={() => setOpen(false)}
-          className="
-          lg:hidden
-          fixed
-          inset-0
-          bg-black/50
-          z-40
-        "
+          className="lg:hidden fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-[45]"
         />
       )}
 
-      {/* ================= MOBILE DRAWER ================= */}
-
+      {/* ================= FIXED: MOBILE DRAWER ================= */}
       <div
-        className={`
-        lg:hidden
-        fixed
-        top-0
-        left-0
-        w-[280px]
-        h-screen
-        bg-white
-        dark:bg-[#081C15]
-        border-r
-        border-gray-200
-        dark:border-white/10
-        z-50
-        transition-all
-        duration-300
-        ${open ? "translate-x-0" : "-translate-x-full"}
-      `}
+        className={`lg:hidden fixed top-0 left-0 w-[280px] h-screen bg-card border-r border-border z-50 transition-transform duration-300 flex flex-col ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div
-          className="
-          p-5
-          flex
-          items-center
-          justify-between
-          border-b
-          border-gray-200
-          dark:border-white/10
-        "
-        >
-          <h2 className="text-2xl font-bold">
-            Hire
-            <span className="text-green-600">Edge</span>
+        <div className="p-5 flex items-center justify-between border-b border-border">
+          <h2 className="text-2xl font-black tracking-tight text-foreground">
+            Hire<span className="text-green-600 dark:text-green-400">Edge</span>
           </h2>
 
-          <button onClick={() => setOpen(false)}>
-            <X />
+          <button
+            onClick={() => setOpen(false)}
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground cursor-pointer"
+          >
+            <X size={18} />
           </button>
         </div>
 
-        <div className="p-4 space-y-2">
+        {/* Links Navigation */}
+        <div className="p-4 space-y-1.5 flex-1 overflow-y-auto">
           {menus.map((item) => {
             const Icon = item.icon;
+            const isActive = pathname === item.href;
 
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={`
-                  flex
-                  items-center
-                  gap-3
-                  px-4
-                  py-3
-                  rounded-xl
-                  transition-all
-                  ${
-                    pathname === item.href
-                      ? "bg-green-600 text-white"
-                      : "hover:bg-green-500/10"
-                  }
-                `}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  isActive
+                    ? "bg-green-600 text-white shadow-sm"
+                    : "text-muted-foreground hover:bg-green-500/10 hover:text-green-600 dark:hover:text-green-400"
+                }`}
               >
-                <Icon size={20} />
+                <Icon
+                  size={18}
+                  className={isActive ? "text-white" : "opacity-80"}
+                />
                 {item.title}
               </Link>
             );
           })}
         </div>
 
-        <div className="absolute bottom-6 left-4 right-4">
-          <button
-            className="
-            w-full
-            h-11
-            rounded-xl
-            border
-            border-red-500/20
-            text-red-500
-            hover:bg-red-500/10
-            flex
-            items-center
-            justify-center
-            gap-2
-          "
-          >
-            <LogOut size={18} />
+        {/* Logout Button Mobile */}
+        <div className="p-4 border-t border-border/60">
+          <button className="w-full h-11 rounded-xl border border-red-500/20 text-red-500 hover:bg-red-500/10 flex items-center justify-center gap-2 font-semibold text-sm transition-colors cursor-pointer">
+            <LogOut size={16} />
             Logout
           </button>
         </div>
       </div>
 
-      {/* ================= DESKTOP SIDEBAR ================= */}
-
-      <aside
-        className="
-        hidden
-        lg:flex
-        flex-col
-        w-[280px]
-        h-screen
-        sticky
-        top-0
-        bg-white
-        dark:bg-[#081C15]
-        border-r
-        border-gray-200
-        dark:border-white/10
-        p-6
-        
-      "
-      >
+      {/* ================= FIXED: DESKTOP SIDEBAR ================= */}
+      <aside className="hidden lg:flex flex-col w-[280px] h-screen sticky top-0 bg-card border-r border-border p-6 shadow-[4px_0_30px_rgba(0,0,0,0.01)] dark:shadow-[4px_0_30px_rgba(34,197,94,0.005)]">
         <div>
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-3xl font-black tracking-tight text-foreground">
             <Link href="/">
               Hire
-              <span className="text-green-600">Edge</span>
+              <span className="text-green-600 dark:text-green-400">Edge</span>
             </Link>
           </h2>
-
-          <p className="text-sm text-muted-foreground mt-1">Dashboard Panel</p>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mt-1.5 pl-0.5">
+            Dashboard Panel
+          </p>
         </div>
 
-        <div className="mt-10 space-y-2">
+        {/* Desktop Links */}
+        <div className="mt-10 space-y-1.5 flex-1 overflow-y-auto">
           {menus.map((item) => {
             const Icon = item.icon;
+            const isActive = pathname === item.href;
 
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`
-                  flex
-                  items-center
-                  gap-3
-                  px-4
-                  py-3
-                  rounded-xl
-                  transition-all
-                  ${
-                    pathname === item.href
-                      ? "bg-green-600 text-white"
-                      : "hover:bg-green-500/10"
-                  }
-                `}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  isActive
+                    ? "bg-green-600 text-white shadow-[0_4px_15px_rgba(34,197,94,0.15)]"
+                    : "text-muted-foreground hover:bg-green-500/10 hover:text-green-600 dark:hover:text-green-400"
+                }`}
               >
-                <Icon size={20} />
+                <Icon
+                  size={18}
+                  className={isActive ? "text-white" : "opacity-80"}
+                />
                 {item.title}
               </Link>
             );
           })}
         </div>
 
-        <div className="mt-auto">
-          <button
-            className="
-            w-full
-            h-11
-            rounded-xl
-            border
-            border-red-500/20
-            text-red-500
-            hover:bg-red-500/10
-            flex
-            items-center
-            justify-center
-            gap-2 cursor-pointer
-          "
-          >
-            <LogOut size={18} />
+        {/* Logout Button Desktop */}
+        <div className="mt-auto pt-4 border-t border-border/60">
+          <button className="w-full h-11 rounded-xl border border-red-500/20 text-red-500 hover:bg-red-500/10 flex items-center justify-center gap-2 font-semibold text-sm transition-colors cursor-pointer">
+            <LogOut size={16} />
             Logout
           </button>
         </div>
