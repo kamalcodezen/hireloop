@@ -254,13 +254,13 @@ const DashboardSidebar = () => {
 
         {/* Desktop Links */}
         <div className="mt-10 space-y-1.5 flex-1 overflow-y-auto">
-          {menus.map((item) => {
+          {menus.map((item,ind) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
 
             return (
               <Link
-                key={item.href}
+                key={ind}
                 href={item.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                   isActive
