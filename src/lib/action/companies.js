@@ -6,6 +6,12 @@ export const createCompany = async (companyData) => {
     return serverMutation("/api/companies", companyData)
 }
 
+// companies status update 
+export const updateCompanyStatusById = async (id, status) => {
+    return serverMutation(`/api/companies/${id}`, status, "PATCH")
+}
+
+
 
 // export const createCompany = async (companyData) => {
 //     const res = await fetch(`${baseurl}/api/companies`, {

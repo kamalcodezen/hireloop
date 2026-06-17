@@ -15,28 +15,38 @@ import {
   UserCheck,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import { updateCompanyStatusById } from "@/lib/action/companies";
+import { useRouter } from "next/navigation";
+import { Playwrite_BE_VLG } from "next/font/google";
 
 export default function CompaniesList({ initialCompanies = [] }) {
   const [companies, setCompanies] = useState(initialCompanies);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+  const router = useRouter();
 
-  //  স্ট্যাটাস আপডেট হ্যান্ডলার (তুমি তোমার মঙ্গোডিবি সার্ভার অ্যাকশন বা এপিআই এখানে কল করতে পারো)
   const handleUpdateStatus = async (id, newStatus) => {
     try {
-      // লোকাল স্টেট ইনস্ট্যান্ট আপডেট করা হচ্ছে যাতে ইন্টারফেস ফাস্ট লাগে
+      // ২. অপ্টিমিস্টিক আপডেট: ইন্টারফেস ফাস্ট রাখার জন্য স্ক্রিনের ডাটা সাথে সাথে চেঞ্জ
       setCompanies((prev) =>
         prev.map((company) =>
           company._id === id ? { ...company, status: newStatus } : company,
         ),
       );
 
-      toast.success(`Company status marked as ${newStatus} successfully!`);
-
-      // এখানে তোমার আসল ব্যাকএন্ড অ্যাকশন কল করো:
-      // await updateCompanyStatusAction(id, newStatus);
+      //  এখানে ফিক্স করা হলো: newStatus-কে 'status' কি (key) দিয়ে পাঠানো হচ্ছে
+      const result = await updateCompanyStatusById(id, { status: newStatus });
+      if (
+        result.acknowledged &&
+        (result.modifiedCount > 0 || result.matchedCount > 0)
+      ) {
+        toast.success(`Company status marked as ${newStatus} successfully!`);
+        router.refresh();
+      } else {
+        toast.error("Failed to update. Company not found!");
+      }
     } catch (error) {
-      toast.error("Failed to update status");
+      toast.error("Failed to update status on server. Rolled back changes.");
     }
   };
 
