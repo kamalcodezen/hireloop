@@ -115,7 +115,7 @@ const DashboardSidebar = () => {
     },
   ];
 
-    // Admin Dashboard Links
+  // Admin Dashboard Links
   const adminNavLinks = [
     {
       title: "Dashboard",
@@ -255,7 +255,7 @@ const DashboardSidebar = () => {
 
         {/* Desktop Links */}
         <div className="mt-10 space-y-1.5 flex-1 overflow-y-auto">
-          {menus.map((item,ind) => {
+          {menus.map((item, ind) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
 

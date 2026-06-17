@@ -122,11 +122,13 @@ export default function CompaniesList({ initialCompanies = [] }) {
                 <tr className="border-b border-border bg-muted/40 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   <th className="py-4 px-6">Company Credentials</th>
                   <th className="py-4 px-6 hidden md:table-cell">
-                    Meta Logistics
+                    Logistics & Web
                   </th>
                   <th className="py-4 px-6 hidden lg:table-cell">
                     Recruiter Ownership
                   </th>
+                  {/* 💡 md:table-cell দিয়ে মাঝারি স্ক্রিন থেকে Total Jobs কলামটি অন করা হলো */}
+                  <th className="py-4 px-6 hidden md:table-cell">Total Jobs</th>
                   <th className="py-4 px-6">Status Tag</th>
                   <th className="py-4 px-6 text-right">Moderation Actions</th>
                 </tr>
@@ -144,7 +146,7 @@ export default function CompaniesList({ initialCompanies = [] }) {
                       className="hover:bg-muted/30 transition-colors group"
                     >
                       {/* ১. কোম্পানি নাম, লোগো এবং ইন্ডাস্ট্রি */}
-                      <td className="py-4 px-6">
+                      <td className="py-4 px-6 align-middle">
                         <div className="flex items-center gap-4">
                           <div className="h-12 w-12 rounded-xl border border-border bg-background p-2 shrink-0 flex items-center justify-center shadow-inner">
                             <img
@@ -165,7 +167,7 @@ export default function CompaniesList({ initialCompanies = [] }) {
                       </td>
 
                       {/* ২. লজিস্টিকস (ওয়েবসাইট ও লোকেশন) */}
-                      <td className="py-4 px-6 hidden md:table-cell">
+                      <td className="py-4 px-6 hidden md:table-cell align-middle">
                         <div className="flex flex-col gap-1 text-xs text-muted-foreground">
                           <div className="flex items-center gap-1.5">
                             <MapPin
@@ -201,7 +203,7 @@ export default function CompaniesList({ initialCompanies = [] }) {
                       </td>
 
                       {/* ৩. রিক্রুটার আইডি */}
-                      <td className="py-4 px-6 hidden lg:table-cell text-xs text-muted-foreground">
+                      <td className="py-4 px-6 hidden lg:table-cell text-xs text-muted-foreground align-middle">
                         <div className="flex items-center gap-1.5">
                           <UserCheck
                             size={13}
@@ -213,8 +215,15 @@ export default function CompaniesList({ initialCompanies = [] }) {
                         </div>
                       </td>
 
-                      {/* ৪. স্ট্যাটাস ব্যাজ */}
-                      <td className="py-4 px-6 vertical-align-middle">
+                      {/* 💼 ৪. টোটাল জব কাউন্ট (এটিও md স্ক্রিন থেকে টেবিল সেলে সুন্দরভাবে দেখাবে) */}
+                      <td className="py-4 px-6 hidden md:table-cell align-middle font-bold text-foreground">
+                        <span className="bg-muted/80 px-2.5 py-1 rounded-md border border-border/40 text-xs">
+                          {comp?.applications ?? 0} Jobs
+                        </span>
+                      </td>
+
+                      {/* 🏷️ ৫. স্ট্যাটাস ব্যাজ */}
+                      <td className="py-4 px-6 align-middle">
                         <span
                           className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-full border tracking-wide capitalize ${
                             statusStyles[comp.status?.toLowerCase()] ||
@@ -235,10 +244,10 @@ export default function CompaniesList({ initialCompanies = [] }) {
                         </span>
                       </td>
 
-                      {/* ৫. এডমিন মডারেশন অ্যাকশন বাটন প্যানেল */}
-                      <td className="py-4 px-6 text-right vertical-align-middle">
+                      {/* ⚙️ ৬. এডমিন মডারেশন অ্যাকশন বাটন প্যানেল */}
+                      <td className="py-4 px-6 text-right align-middle">
                         <div className="flex items-center justify-end gap-1.5">
-                          {/* Approve Action Button */}
+                          {/* Approve Button */}
                           {comp.status !== "Approved" && (
                             <button
                               onClick={() =>
@@ -251,7 +260,7 @@ export default function CompaniesList({ initialCompanies = [] }) {
                             </button>
                           )}
 
-                          {/* Reject Action Button */}
+                          {/* Reject Button */}
                           {comp.status !== "Rejected" && (
                             <button
                               onClick={() =>
