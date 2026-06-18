@@ -56,10 +56,10 @@ export const serverMutation = async (path, data, method = "POST") => {
 // handle status code
 export const handleStatusCode = async (res) => {
     if (res.status === 401) {
-        redirect("/login")
+        redirect("/unauthorized")
     }
     if (res.status === 403) {
-        redirect("/unauthorized")
+        redirect("/forbidden")
     }
     return await res.json()
 }
