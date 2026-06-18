@@ -1,36 +1,61 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import JobFilters from "./JobFilters";
 import JobCard from "../shared/JobCard";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-const JobListingContainer = ({ initialJobs = [] }) => {
+const JobListingContainer = ({ jobs = [] }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isRemoteOnly, setIsRemoteOnly] = useState(false);
+  const router = useRouter();
 
-  const filteredJobs = useMemo(() => {
-    return initialJobs.filter((job) => {
-      const matchesSearch =
-        job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.requirements?.toLowerCase().includes(searchQuery.toLowerCase());
+  useEffect(() => {
+    const sp = new URLSearchParams();
 
-      const matchesType =
-        selectedType === "all" ||
-        job.type?.toLowerCase() === selectedType.toLowerCase();
+    if (searchQuery) {
+      sp.set("search", searchQuery);
+    }
 
-      const matchesCategory =
-        selectedCategory === "all" ||
-        job.category?.toLowerCase() === selectedCategory.toLowerCase();
+    if (selectedType !== "all") {
+      sp.set("type", selectedType);
+    }
 
-      const matchesRemote = !isRemoteOnly || job.isRemote === true;
+    if (selectedCategory !== "all") {
+      sp.set("category", selectedCategory);
+    }
 
-      return matchesSearch && matchesType && matchesCategory && matchesRemote;
-    });
-  }, [initialJobs, searchQuery, selectedType, selectedCategory, isRemoteOnly]);
+    if (isRemoteOnly) {
+      sp.set("isRemote", true);
+    }
+
+    const path = `?${sp.toString()}`;
+    router.push(path);
+  }, [router, searchQuery, selectedType, selectedCategory, isRemoteOnly]);
+
+  // const jobs = useMemo(() => {
+  //   return initialJobs.filter((job) => {
+  //     const matchesSearch =
+  //       job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job.requirements?.toLowerCase().includes(searchQuery.toLowerCase());
+
+  //     const matchesType =
+  //       selectedType === "all" ||
+  //       job.type?.toLowerCase() === selectedType.toLowerCase();
+
+  //     const matchesCategory =
+  //       selectedCategory === "all" ||
+  //       job.category?.toLowerCase() === selectedCategory.toLowerCase();
+
+  //     const matchesRemote = !isRemoteOnly || job.isRemote === true;
+
+  //     return matchesSearch && matchesType && matchesCategory && matchesRemote;
+  //   });
+  // }, [initialJobs, searchQuery, selectedType, selectedCategory, isRemoteOnly]);
 
   return (
     <>
@@ -48,15 +73,13 @@ const JobListingContainer = ({ initialJobs = [] }) => {
       <div className="max-w-7xl mx-auto flex items-center justify-between mb-5">
         <p className="text-muted-foreground">
           Showing{" "}
-          <span className="font-semibold text-green-500">
-            {filteredJobs.length}
-          </span>{" "}
+          <span className="font-semibold text-green-500">{jobs.length}</span>{" "}
           jobs
         </p>
       </div>
 
       <AnimatePresence mode="wait">
-        {filteredJobs.length > 0 ? (
+        {jobs.length > 0 ? (
           <motion.div
             key="grid"
             layout
@@ -65,7 +88,7 @@ const JobListingContainer = ({ initialJobs = [] }) => {
             exit="hidden"
             className="max-w-7xl mx-auto grid lg:grid-cols-3 md:grid-cols-2 gap-8"
           >
-            {filteredJobs.map((job, index) => (
+            {jobs.map((job, index) => (
               <motion.div
                 key={job._id}
                 layout

@@ -25,7 +25,7 @@ export default async function Page() {
           </p>
         </div> */}
 
-        <JobListingContainer initialJobs={jobs || []} />
+        <JobListingContainer jobs={jobs || []} />
       </div>
     </section>
   );
