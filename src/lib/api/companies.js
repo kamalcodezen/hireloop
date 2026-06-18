@@ -1,12 +1,12 @@
 "use server"
 
-import { serverFetch } from "../core/server"
+import { protectServer, serverFetch } from "../core/server"
 import { getUserSession } from "../core/session"
 
 
 // get all companies data 
 export const getAllCompanies = async () => {
-    return serverFetch(`/api/companies`)
+    return protectServer(`/api/companies`)
 }
 
 

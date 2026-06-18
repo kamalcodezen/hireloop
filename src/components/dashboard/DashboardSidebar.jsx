@@ -232,7 +232,10 @@ const DashboardSidebar = () => {
 
         {/* Logout Button Mobile */}
         <div className="p-4 border-t border-border/60">
-          <button className="w-full h-11 rounded-xl border border-red-500/20 text-red-500 hover:bg-red-500/10 flex items-center justify-center gap-2 font-semibold text-sm transition-colors cursor-pointer">
+          <button
+            onClick={handleSignOut}
+            className="w-full h-11 rounded-xl border border-red-500/20 text-red-500 hover:bg-red-500/10 flex items-center justify-center gap-2 font-semibold text-sm transition-colors cursor-pointer"
+          >
             <LogOut size={16} />
             Logout
           </button>

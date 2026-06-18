@@ -13,6 +13,20 @@ export const getUserSession = async () => {
 }
 
 
+// user session token generate
+export const getUserToken = async () => {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    return session?.session?.token || null
+
+}
+
+
+
+
+
 // role based require
 export const requireAccessRole = async (role) => {
     const user = await getUserSession()
