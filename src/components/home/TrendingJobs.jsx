@@ -3,7 +3,12 @@ import JobCard from "../shared/JobCard";
 import { getAllJobs } from "@/lib/api/jobs";
 
 const TrendingJobs = async () => {
-  const jobs = await getAllJobs();
+  // 🎯 ১. ব্যাকএন্ডের অল-ইন-ওয়ান এপিআই থেকে রেসপন্স অবজেক্টটি আনা হলো
+  const apiResponse = await getAllJobs();
+
+  // 🎯 ২. জাদুর লাইন: অবজেক্টের ভেতর থেকে আসল জবের অ্যারে (apiResponse.jobs) বের করা হলো
+  // যদি কোনো কারণে এপিআই ডাউন থাকে, তবে ক্র্যাশ ঠেকাতে ব্যাকআপ হিসেবে খালি অ্যারে [] দেওয়া হলো
+  const jobsList = apiResponse?.jobs || [];
 
   return (
     <section className="relative overflow-hidden py-20">
@@ -21,7 +26,7 @@ const TrendingJobs = async () => {
               🔥 Trending Opportunities
             </span>
 
-            <h2 className="mt-4 text-4xl md:text-5xl font-bold">
+            <h2 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight">
               Discover Your Next Career Move
             </h2>
 
@@ -33,31 +38,30 @@ const TrendingJobs = async () => {
 
           <Link
             href="/jobs"
-            className="
-          hidden md:flex
-          items-center
-          gap-2
-          px-5
-          h-11
-          rounded-xl
-          border
-          border-border
-          bg-card/80
-          backdrop-blur-xl
-          hover:border-green-500/30
-          hover:text-green-500
-          transition-all
-        "
+            className="hidden md:flex items-center gap-2 px-5 h-11 rounded-xl border border-border bg-card/80 backdrop-blur-xl hover:border-green-500/30 hover:text-green-500 transition-all duration-300 shadow-sm"
           >
             View All Jobs →
           </Link>
         </div>
 
-        {/* Jobs */}
+        {/* Jobs Grid (🎯 ফিক্সড: jobsList ব্যবহার করে লেটেস্ট প্রথম ৬টি চাকরি ডাইনামিক রেন্ডার) */}
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-          {jobs?.slice(3, 9).map((job) => (
-            <JobCard key={job._id} job={job} />
+          {jobsList?.slice(0, 6).map((job) => (
+            <JobCard
+              key={job._id ? job._id.toString() : Math.random()}
+              job={job}
+            />
           ))}
+        </div>
+
+        {/* Mobile View All Button */}
+        <div className="flex md:hidden justify-center mt-10">
+          <Link
+            href="/jobs"
+            className="w-full text-center py-3 rounded-xl border border-border bg-card text-sm font-medium hover:text-green-500 transition-all"
+          >
+            View All Jobs →
+          </Link>
         </div>
       </div>
     </section>

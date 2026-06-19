@@ -95,7 +95,7 @@ const DashboardSidebar = () => {
     },
     {
       title: "Saved Jobs",
-      href: "/dashboard/seeker/saved-jobs",
+      href: "/dashboard/seeker",
       icon: Bookmark,
     },
     {
@@ -105,12 +105,12 @@ const DashboardSidebar = () => {
     },
     {
       title: "Billing",
-      href: "/dashboard/seeker/billing",
+      href: "/plans",
       icon: CreditCard,
     },
     {
       title: "Settings",
-      href: "/dashboard/seeker/settings",
+      href: "/dashboard/seeker",
       icon: Settings,
     },
   ];
@@ -134,17 +134,17 @@ const DashboardSidebar = () => {
     },
     {
       title: "Jobs",
-      href: "/dashboard/admin/jobs",
+      href: "/jobs",
       icon: BriefcaseBusiness,
     },
     {
       title: "Payments",
-      href: "/dashboard/admin/payments",
+      href: "/plans",
       icon: CreditCard,
     },
     {
       title: "Settings",
-      href: "/dashboard/admin/settings",
+      href: "/dashboard/admin",
       icon: Settings,
     },
   ];
