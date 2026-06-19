@@ -6,8 +6,8 @@ const baseurl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 
 // get all jobs
-export const getAllJobs = async () => {
-    return await serverFetch("/api/jobs")
+export const getAllJobs = async (queryString) => {
+    return await serverFetch(`/api/jobs?${queryString}`)
 }
 
 // get jobs Details by id

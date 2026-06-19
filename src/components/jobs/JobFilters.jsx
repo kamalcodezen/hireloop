@@ -40,6 +40,7 @@ export default function JobFilters({
           <TextField
             value={searchQuery}
             onChange={(value) => setSearchQuery(value)}
+            aria-label="search jobs"
             className="w-full"
           >
             <InputGroup className="bg-background border border-border rounded-xl transition-all duration-300 focus-within:border-green-500 focus-within:shadow-[0_0_15px_rgba(34,197,94,0.12)]">
@@ -47,6 +48,7 @@ export default function JobFilters({
                 <Magnifier className="w-4 h-4" />
               </InputGroup.Prefix>
               <InputGroup.Input
+                suppressHydrationWarning
                 placeholder="Title, company, or keywords..."
                 className="bg-transparent text-foreground placeholder-muted-foreground/50 text-sm h-12 outline-none w-full"
               />
@@ -62,8 +64,12 @@ export default function JobFilters({
           <Select
             selectedKey={selectedType}
             onSelectionChange={setSelectedType}
+            aria-label="Filter jobs by type"
           >
-            <Select.Trigger className="w-full h-12 flex items-center justify-between rounded-xl border border-border bg-background px-4 text-sm text-foreground hover:border-muted-foreground/30 focus:border-green-500 outline-none transition-all duration-300">
+            <Select.Trigger
+              suppressHydrationWarning
+              className="w-full h-12 flex items-center justify-between rounded-xl border border-border bg-background px-4 text-sm text-foreground hover:border-muted-foreground/30 focus:border-green-500 outline-none transition-all duration-300"
+            >
               <Select.Value>
                 {selectedType === "all" || !selectedType
                   ? "All Types"
@@ -119,6 +125,7 @@ export default function JobFilters({
           <Select
             selectedKey={selectedCategory}
             onSelectionChange={setSelectedCategory}
+            aria-label="Filter jobs by category"
           >
             <Select.Trigger className="w-full h-12 flex items-center justify-between rounded-xl border border-border bg-background px-4 text-sm text-foreground hover:border-muted-foreground/30 focus:border-green-500 outline-none transition-all duration-300">
               <Select.Value>
