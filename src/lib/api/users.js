@@ -1,20 +1,20 @@
-"use server"
+// "use server"
 
-import { headers } from "next/headers";
-import { auth } from "../auth";
+// import { headers } from "next/headers";
+// import { auth } from "../auth";
 
 
-export const getUsersList = async () => {
+// export const getUsersList = async () => {
 
-    const users = await auth.api.listUsers({
-        query: {
+//     const users = await auth.api.listUsers({
+//         query: {
 
-            sortBy: "createdAt",
-            sortDirection: "desc",
+//             sortBy: "createdAt",
+//             sortDirection: "desc",
 
-        },
-        // This endpoint requires session cookies.
-        headers: await headers(),
-    });
-    return await users
-}
+//         },
+//         // This endpoint requires session cookies.
+//         headers: await headers(),
+//     });
+//     return await users
+// }

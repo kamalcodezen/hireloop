@@ -108,11 +108,7 @@ const DashboardSidebar = () => {
       href: "/plans",
       icon: CreditCard,
     },
-    {
-      title: "Settings",
-      href: "/dashboard/seeker",
-      icon: Settings,
-    },
+ 
   ];
 
   // Admin Dashboard Links

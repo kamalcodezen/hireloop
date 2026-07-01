@@ -20,22 +20,22 @@ import { useRouter } from "next/navigation";
 export default function AdminUsersList({ users: initialUsers = [] }) {
   const router = useRouter();
 
-  // 🔍 সার্চ, ফিল্টার এবং মডাল ট্র্যাকিং স্টেটসমূহ
+  //  সার্চ, ফিল্টার এবং মডাল ট্র্যাকিং স্টেটসমূহ
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [pendingChange, setPendingChange] = useState(null); // stores { userId, userName, newRole }
+  const [pendingChange, setPendingChange] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // 📦 লাইভ ডাটা রিফ্রেশ ট্র্যাকিং লোকাল স্টেট (UI ফ্রোজেন হওয়া ঠেকাতে)
+  //  লাইভ ডাটা রিফ্রেশ ট্র্যাকিং লোকাল স্টেট (UI ফ্রোজেন হওয়া ঠেকাতে)
   const [localUsers, setLocalUsers] = useState(initialUsers);
 
-  // 🔄 জাদুর লাইন: যখনই router.refresh() সার্ভার থেকে নতুন ডাটা আনবে, এটি লোকাল স্টেটকে সিঙ্ক করবে
+  //  যখনই router.refresh() সার্ভার থেকে নতুন ডাটা আনবে, এটি লোকাল স্টেটকে সিঙ্ক করবে
   useEffect(() => {
     setLocalUsers(initialUsers);
   }, [initialUsers]);
 
-  // 📅 MongoDB ISO ডেট ফরমেট করার হেল্পার ফাংশন
+  //  MongoDB ISO ডেট ফরমেট করার হেল্পার ফাংশন
   const formatDate = (dateObj) => {
     if (!dateObj) return "N/A";
     const dateStr = dateObj.$date ? dateObj.$date : dateObj;
@@ -47,10 +47,8 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
     });
   };
 
-  // 🆔 MongoDB Object ID অ্যাক্সেস করার সেফ ফাংশন
-  const getUserId = (user) => user._id?.$oid || user._id || user.id;
 
-  // 🧙‍♂️ useMemo দিয়ে লাইভ সার্চ ও ফিল্টারিং মেকানিজম
+  //  useMemo দিয়ে লাইভ সার্চ ও ফিল্টারিং 
   const filteredUsers = useMemo(() => {
     return localUsers.filter((user) => {
       const matchesSearch =
@@ -62,13 +60,14 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
     });
   }, [localUsers, search, roleFilter]);
 
-  // 🛠️ মডাল পপআপ ট্রিগার করার ফাংশন
+
+  //  মডাল পপআপ ট্রিগার করার ফাংশন
   const initiateRoleChange = (userId, userName, newRole) => {
     setPendingChange({ userId, userName, newRole });
     setIsConfirmOpen(true);
   };
 
-  // 🔄 কনফার্ম বাটনে চাপ দিলে রোল আপডেট এক্সিকিউট করার মূল ফাংশন
+  // কনফার্ম বাটনে চাপ দিলে রোল আপডেট এক্সিকিউট করার মূল ফাংশন
   const confirmRoleChange = async () => {
     if (!pendingChange) return;
 
@@ -76,21 +75,17 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
     try {
       const { userId, newRole } = pendingChange;
 
-      // ১. ব্যাকএ্যান্ডের সার্ভার অ্যাকশন কল (ফিক্সড: সরাসরি প্যারামিটার পাস করা হলো অবজেক্ট ছাড়া)
-      await updateUserRole(userId, newRole);
+      // await updateUserRole(userId, newRole);
 
-      // ২. ফ্রন্টঅ্যান্ডের লোকাল স্টেট সাথে সাথে চেঞ্জ করা (ইনস্ট্যান্ট রেসপন্স)
       setLocalUsers((prev) =>
         prev.map((u) =>
           getUserId(u) === userId ? { ...u, role: newRole } : u,
         ),
       );
 
-      // ৩. মডাল বন্ধ করা
       setIsConfirmOpen(false);
       setPendingChange(null);
 
-      // ৪. সার্ভার সাইড ডাটা রিফ্রেশ ও সিঙ্ক করা
       router.refresh();
     } catch (error) {
       console.error("Failed to update user role:", error);
@@ -111,7 +106,7 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
         </p>
       </div>
 
-      {/* 📊 ১. ডার্ক গ্রিন প্রিমিয়াম স্ট্যাটাস কার্ড লেআউট */}
+      {/*  Status Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
         <div className="rounded-xl border border-white/10 bg-[#051610] p-6 shadow-xl">
           <div className="flex items-center justify-between">
@@ -151,7 +146,7 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
         </div>
       </div>
 
-      {/* 🔍 ২. সার্চ এবং ফিল্টার সেকশন */}
+      {/*  search and filter */}
       <div className="rounded-xl border border-white/10 bg-[#051610] p-5 shadow-xl">
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="relative flex-1">
@@ -188,7 +183,7 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
         </div>
       </div>
 
-      {/* 📋 ৩. মেইন ডাটা টেবিল */}
+      {/*  mai data table */}
       <div className="w-full bg-[#051610] border border-white/10 rounded-xl overflow-hidden shadow-2xl font-sans">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px] border-collapse text-left text-sm text-white/70">
@@ -327,7 +322,7 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
         </div>
       </div>
 
-      {/* সার্চের ডাটা জিরো হলে এই নোটিফিকেশন বক্সটি দেখাবে */}
+      {/* search data not found */}
       {filteredUsers.length === 0 && (
         <div className="rounded-3xl border border-dashed border-white/10 py-20 text-center bg-[#051610]">
           <h3 className="text-xl font-semibold text-white/80">
@@ -339,11 +334,11 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
         </div>
       )}
 
-      {/* 🪟 ৪. কাস্টম লাক্সারি ডার্ক গ্রিন থিম কনফার্মেশন মডাল পপআপ */}
+      {/* modal */}
       {isConfirmOpen && pendingChange && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-black/60">
           <div className="w-full max-w-sm bg-[#051610] border border-white/10 rounded-2xl p-6 shadow-2xl space-y-6 relative animate-in fade-in zoom-in-95 duration-150">
-            {/* মডাল ক্লোজ বাটন */}
+            {/* modal close button */}
             <button
               onClick={() => {
                 setIsConfirmOpen(false);
@@ -354,7 +349,7 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
               <X size={16} />
             </button>
 
-            {/* মডাল বডি */}
+            {/* body */}
             <div className="space-y-2">
               <h3 className="text-base font-bold text-white">
                 Confirm Role Change
@@ -372,7 +367,7 @@ export default function AdminUsersList({ users: initialUsers = [] }) {
               </p>
             </div>
 
-            {/* ফুটার একশন বাটনসমূহ */}
+            {/* footer action buttons */}
             <div className="flex items-center justify-end gap-3 text-xs font-medium pt-2 border-t border-white/5">
               <button
                 disabled={isUpdating}
